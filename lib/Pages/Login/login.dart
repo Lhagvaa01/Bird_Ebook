@@ -202,7 +202,7 @@ class _LoginMainState extends State<LoginMain> {
                                         primary: Colors.red,
                                       ),
                                       onPressed: () {},
-                                      child: Text('Click me'),
+                                      child: Text('Нэвтрэх'),
                                     ),
                                   ),
                                 ),

@@ -96,7 +96,7 @@ class _SignUpMainState extends State<SignUpMain> {
                         ),
                         Container(
                           child: Text(
-                            "PLANET MONGOLIAsss",
+                            "PLANET MONGOLIA",
                             style: TextStyle(color: Color(0xFFF1DF3F)),
                           ),
                         ),
@@ -147,7 +147,7 @@ class _SignUpMainState extends State<SignUpMain> {
                           padding: EdgeInsets.all(20),
                           child: Text(
                             textAlign: TextAlign.start,
-                            "Login",
+                            "Sing up",
                             style: TextStyle(color: Colors.red, fontSize: 30),
                           ),
                         ),
@@ -208,7 +208,7 @@ class _SignUpMainState extends State<SignUpMain> {
                                                   SignUpMain()),
                                         );
                                       },
-                                      child: Text('Click me'),
+                                      child: Text('Бүртгүүлэх'),
                                     ),
                                   ),
                                 ),
@@ -237,7 +237,7 @@ class _SignUpMainState extends State<SignUpMain> {
                         // Text("")
                         Center(
                       child: Text(
-                        "Sign up",
+                        "Login",
                         style: TextStyle(color: Colors.red, fontSize: 25),
                       ),
                     ),
