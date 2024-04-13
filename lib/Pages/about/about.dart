@@ -1,4 +1,4 @@
-// ignore_for_file: unused_local_variable, prefer_const_constructors, prefer_const_literals_to_create_immutables, avoid_unnecessary_containers, sized_box_for_whitespace
+// ignore_for_file: unused_local_variable, prefer_const_constructors, prefer_const_literals_to_create_immutables, avoid_unnecessary_containers, sized_box_for_whitespace, unnecessary_brace_in_string_interps
 
 import 'package:audioplayers/audioplayers.dart';
 import 'package:bird_ebook/Models/BirdDatas.dart';
@@ -36,7 +36,6 @@ class _BirdAboutState extends State<BirdAbout> {
 
   @override
   void dispose() {
-    // TODO: implement dispose
     super.dispose();
     player.stop();
   }
@@ -141,8 +140,8 @@ class _BirdAboutState extends State<BirdAbout> {
                             togglePlayPause(url);
                           },
                           icon: Container(
-                            width: size.height / 5,
-                            height: size.height / 5,
+                            width: 35,
+                            height: 35,
                             decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(100),
                                 color: Colors.black),
@@ -185,10 +184,12 @@ class _BirdAboutState extends State<BirdAbout> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
-                              Text(
-                                "Size",
-                                textAlign: TextAlign.center,
-                                style: TextStyle(fontWeight: FontWeight.bold),
+                              FittedBox(
+                                child: Text(
+                                  "Size",
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(fontWeight: FontWeight.bold),
+                                ),
                               ),
                               SizedBox(
                                 height: 7,
@@ -211,10 +212,12 @@ class _BirdAboutState extends State<BirdAbout> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
-                              Text(
-                                "Life expectancy",
-                                textAlign: TextAlign.center,
-                                style: TextStyle(fontWeight: FontWeight.bold),
+                              FittedBox(
+                                child: Text(
+                                  "Life expectancy",
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(fontWeight: FontWeight.bold),
+                                ),
                               ),
                               SizedBox(
                                 height: 7,
@@ -237,10 +240,12 @@ class _BirdAboutState extends State<BirdAbout> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
-                              Text(
-                                "Living Environment",
-                                textAlign: TextAlign.center,
-                                style: TextStyle(fontWeight: FontWeight.bold),
+                              FittedBox(
+                                child: Text(
+                                  "Living Environment",
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(fontWeight: FontWeight.bold),
+                                ),
                               ),
                               SizedBox(
                                 height: 7,

@@ -10,6 +10,7 @@ import 'package:nb_utils/nb_utils.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 
 import '../../Models/Users.dart';
+import '../../constant.dart';
 import '../../main.dart';
 import '../../post@get/api.dart';
 import '../SignUp/signUp.dart';
@@ -63,18 +64,20 @@ class _LoginMainState extends State<LoginMain> {
 
         if (statusCode == "200") {
           final users = Users.fromJson(bodyData);
+          print("bodyData: ");
+          print(bodyData);
+          userField = users;
           print("Logged in user: ${users.tCUSERNAME}");
-          toasty(ctx, "Амжилттай нэвтэрлээ                                     ",
-            bgColor: Colors.green,
-            textColor: whiteColor,
-            gravity: ToastGravity.BOTTOM,
-            length: Toast.LENGTH_LONG);
-            Navigator.pop(context);
+          toasty(ctx, "Амжилттай нэвтэрлээ",
+              bgColor: Colors.green,
+              textColor: whiteColor,
+              gravity: ToastGravity.BOTTOM,
+              length: Toast.LENGTH_LONG);
+          Navigator.pop(context);
           Navigator.push(
             context,
             MaterialPageRoute(builder: (context) => HelloConvexAppBar()),
           );
-
         } else {
           Alert(
             context: ctx,
@@ -93,6 +96,13 @@ class _LoginMainState extends State<LoginMain> {
         }
       });
     }
+  }
+
+  getUserIcons(BuildContext ctx) {
+    GetIcons(ctx).then((value) {
+      print("icons[0]: ");
+      print(icons[0].image);
+    });
   }
 
   @override
@@ -269,14 +279,19 @@ class _LoginMainState extends State<LoginMain> {
                                         builder: (context) => ProFile()),
                                   );
                                 },
-                                child: Container(
-                                  width: size.width,
-                                  padding: EdgeInsets.all(10),
-                                  child: Text(
-                                    textAlign: TextAlign.end,
-                                    "Forget?",
-                                    style: TextStyle(
-                                        fontSize: 15, color: Colors.grey),
+                                child: GestureDetector(
+                                  onTap: () {
+                                    getUserIcons(context);
+                                  },
+                                  child: Container(
+                                    width: size.width,
+                                    padding: EdgeInsets.all(10),
+                                    child: Text(
+                                      textAlign: TextAlign.end,
+                                      "Forget?",
+                                      style: TextStyle(
+                                          fontSize: 15, color: Colors.grey),
+                                    ),
                                   ),
                                 ),
                               ),
@@ -291,7 +306,7 @@ class _LoginMainState extends State<LoginMain> {
                                     height: 40,
                                     child: ElevatedButton(
                                       style: ElevatedButton.styleFrom(
-                                        primary: Colors.red,
+                                        backgroundColor: Colors.red,
                                       ),
                                       onPressed: () {
                                         login(context);

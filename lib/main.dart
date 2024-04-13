@@ -1,13 +1,18 @@
-// ignore_for_file: unnecessary_const, prefer_const_constructors, prefer_const_literals_to_create_immutables
+// ignore_for_file: unnecessary_const, prefer_const_constructors, prefer_const_literals_to_create_immutables, avoid_print
 
 import 'package:bird_ebook/Pages/Login/login.dart';
 import 'package:bird_ebook/Pages/MainPage/main.dart';
 import 'package:bird_ebook/Pages/birdList/birdList.dart';
 import 'package:bird_ebook/Pages/profile/proFile.dart';
+import 'package:bird_ebook/constant.dart';
 import 'package:flutter/material.dart';
 import 'package:convex_bottom_bar/convex_bottom_bar.dart';
+import 'package:nb_utils/nb_utils.dart';
+import 'package:rflutter_alert/rflutter_alert.dart';
 
+import 'Models/UserIcons.dart';
 import 'Pages/identify a bird/seoson.dart';
+import '../../post@get/api.dart';
 
 void main() {
   runApp(const MyApp());
@@ -21,7 +26,18 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  // This widget is the root of your application.
+  @override
+  void initState() {
+    super.initState();
+    getUserIcons(context);
+  }
+
+  getUserIcons(BuildContext ctx) {
+    GetIcons(ctx).then((value) {
+      print(icons);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(

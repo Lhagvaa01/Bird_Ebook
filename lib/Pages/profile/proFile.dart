@@ -1,9 +1,12 @@
-// ignore_for_file: avoid_unnecessary_containers, prefer_const_constructors, prefer_const_literals_to_create_immutables
+// ignore_for_file: avoid_unnecessary_containers, prefer_const_constructors, prefer_const_literals_to_create_immutables, unnecessary_brace_in_string_interps
 
 import 'dart:math';
 
 import 'package:bird_ebook/Pages/editProfile/editProfile.dart';
+import 'package:bird_ebook/constant.dart';
 import 'package:flutter/material.dart';
+
+import '../../Models/UserIcons.dart';
 
 class ProFile extends StatefulWidget {
   const ProFile({super.key});
@@ -13,6 +16,14 @@ class ProFile extends StatefulWidget {
 }
 
 class _ProFileState extends State<ProFile> {
+  List<UserIcons> filteredItems = [];
+  @override
+  void initState() {
+    super.initState();
+    filteredItems =
+        icons.where((item) => item.id == userField.tCUSERICON).toList();
+  }
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -324,9 +335,23 @@ class _ProFileState extends State<ProFile> {
                     borderRadius: BorderRadius.circular(100),
                     color: Colors.white,
                   ),
+                  child: Image.network(
+                    'http://${backUrlT}${filteredItems[0].image}',
+                    loadingBuilder: (context, child, progress) {
+                      if (progress == null) {
+                        return child;
+                      }
+                      return CircularProgressIndicator(
+                        value: progress.expectedTotalBytes != null
+                            ? progress.cumulativeBytesLoaded /
+                                progress.expectedTotalBytes!
+                            : null,
+                      );
+                    },
+                  ),
                 ),
                 Text(
-                  "Name",
+                  userField.tCUSERNAME!,
                   style: TextStyle(color: Colors.white, fontSize: 20),
                 ),
               ],

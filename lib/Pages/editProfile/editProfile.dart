@@ -1,7 +1,13 @@
-// ignore_for_file: file_names, prefer_const_constructors, avoid_unnecessary_containers, prefer_const_literals_to_create_immutables
+// ignore_for_file: file_names, prefer_const_constructors, avoid_unnecessary_containers, prefer_const_literals_to_create_immutables, unnecessary_brace_in_string_interps, sized_box_for_whitespace, avoid_print
 
 import 'package:bird_ebook/Pages/Login/login.dart';
 import 'package:flutter/material.dart';
+import 'package:nb_utils/nb_utils.dart';
+
+import '../../Models/UserIcons.dart';
+import '../../Models/Users.dart';
+import '../../constant.dart';
+import '../../post@get/api.dart';
 
 class EditProfile extends StatefulWidget {
   const EditProfile({Key? key}) : super(key: key);
@@ -11,6 +17,44 @@ class EditProfile extends StatefulWidget {
 }
 
 class _EditProfileState extends State<EditProfile> {
+  List<UserIcons> filteredItems = [];
+
+  final email = TextEditingController();
+  final password = TextEditingController();
+  final name = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    filteredItems =
+        icons.where((item) => item.id == userField.tCUSERICON).toList();
+    email.text = userField.tCEMAIL!;
+    password.text = userField.tCPASSWORD!;
+    name.text = userField.tCUSERNAME!;
+  }
+
+  Users _users = Users();
+
+  userFieldUpdate(BuildContext ctx) {
+    _users = Users(
+        id: userField.id,
+        tCEMAIL: email.text,
+        tCPASSWORD: password.text,
+        tCUSERNAME: name.text,
+        tCUSERICON: filteredItems[0].id);
+    EditUserPost(_users, ctx).then((value) {
+      setState(() {
+        if (value == "200") {
+          toasty(ctx, "Амжилттай хадгаллаа",
+              bgColor: Colors.green,
+              textColor: whiteColor,
+              gravity: ToastGravity.BOTTOM,
+              length: Toast.LENGTH_LONG);
+        }
+      });
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -45,155 +89,196 @@ class _EditProfileState extends State<EditProfile> {
           ),
         ),
       ),
-      body: Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.only(
-              top: 30.0,
-            ), // Adjust the top padding as needed
-            child: Center(
-              child: Column(
-                children: [
-                  Container(
-                    width: 100,
-                    height: 100,
-                    decoration: BoxDecoration(
-                      border: Border.all(
-                          width: 1.5, color: Color.fromARGB(255, 236, 30, 30)),
-                      borderRadius: BorderRadius.circular(100),
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(
+                top: 30.0,
+              ), // Adjust the top padding as needed
+              child: Center(
+                child: Column(
+                  children: [
+                    Container(
+                      width: 100,
+                      height: 100,
+                      decoration: BoxDecoration(
+                        border: Border.all(
+                            width: 1.5,
+                            color: Color.fromARGB(255, 236, 30, 30)),
+                        borderRadius: BorderRadius.circular(100),
+                      ),
+                      child: Image.network(
+                        'http://${backUrlT}${filteredItems[0].image}',
+                        loadingBuilder: (context, child, progress) {
+                          if (progress == null) {
+                            return child;
+                          }
+                          return CircularProgressIndicator(
+                            value: progress.expectedTotalBytes != null
+                                ? progress.cumulativeBytesLoaded /
+                                    progress.expectedTotalBytes!
+                                : null,
+                          );
+                        },
+                      ),
                     ),
-                  ),
-                  SizedBox(height: 10), // Add space between circle and text
-                  Text(
-                    'Edit Profile',
-                    style: TextStyle(fontSize: 16),
-                  ),
-                  
-                ],
+                    SizedBox(height: 10), // Add space between circle and text
+                    Text(
+                      userField.tCUSERNAME!,
+                      style:
+                          TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                    ),
+                  ],
+                ),
               ),
             ),
-          ),
-          SizedBox(
-            height: 20,
-          ),
-          // ignore: sized_box_for_whitespace
-          Container(
-            height: 70,
-            child: ListView(
-              scrollDirection: Axis.horizontal,
-              children: [
-                Container(
-                  width: 70,
-                  height: 70,
-                  decoration: BoxDecoration(
-                    border: Border.all(width: 1, color: Colors.black),
-                    borderRadius: BorderRadius.circular(100),
-                  ),
-                ),
-                SizedBox(width: 20),
-                Container(
-                  width: 70,
-                  height: 70,
-                  decoration: BoxDecoration(
-                    border: Border.all(width: 1, color: Colors.black),
-                    borderRadius: BorderRadius.circular(100),
-                  ),
-                ),
-                SizedBox(width: 20),
-                Container(
-                  width: 70,
-                  height: 70,
-                  decoration: BoxDecoration(
-                    border: Border.all(width: 1, color: Colors.black),
-                    borderRadius: BorderRadius.circular(100),
-                  ),
-                ),
-                SizedBox(width: 20),
-                Container(
-                  width: 70,
-                  height: 70,
-                  decoration: BoxDecoration(
-                    border: Border.all(width: 1, color: Colors.black),
-                    borderRadius: BorderRadius.circular(100),
-                  ),
-                ),
-                SizedBox(width: 20),
-                Container(
-                  width: 70,
-                  height: 70,
-                  decoration: BoxDecoration(
-                    border: Border.all(width: 1, color: Colors.black),
-                    borderRadius: BorderRadius.circular(100),
-                  ),
-                ),
-                SizedBox(width: 20),
-                Container(
-                  width: 70,
-                  height: 70,
-                  decoration: BoxDecoration(
-                    border: Border.all(width: 1, color: Colors.black),
-                    borderRadius: BorderRadius.circular(100),
-                  ),
-                ),
-              ],
+            SizedBox(
+              height: 20,
             ),
-          ),
-          Container(
-            padding: EdgeInsets.only(top: 40, left: 50, right: 50),
-            width: size.width,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  "About you",
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25),
-                ),
-                SizedBox(height: 15,),
-                TextField(
-                  decoration: InputDecoration(
-                    labelText: 'User Name',
-                    border: UnderlineInputBorder(
-                      borderSide: BorderSide(color: Colors.blue),
-                    ),
-                  ),
-                ),
-                SizedBox(height: 15,),
-                TextField(
-                  decoration: InputDecoration(
-                    labelText: 'Password',
-                    border: UnderlineInputBorder(
-                      borderSide: BorderSide(color: Colors.blue),
-                    ),
-                  ),
-                ),
-                SizedBox(height: 15,),
-                TextField(
-                  decoration: InputDecoration(
-                    labelText: 'E-mail',
-                    border: UnderlineInputBorder(
-                      borderSide: BorderSide(color: Colors.blue),
-                    ),
-                  ),
-                ),
-                   SizedBox(height: 50,),
-                  GestureDetector(
+            Container(
+              height: 70,
+              child: ListView.builder(
+                scrollDirection: Axis.horizontal,
+                itemCount: icons.length,
+                itemBuilder: (BuildContext ctx, int index) {
+                  return GestureDetector(
                     onTap: () {
+                      setState(() {
+                        filteredItems[0] = icons[index];
+                      });
+                    },
+                    child: Container(
+                      margin: EdgeInsets.symmetric(horizontal: 10),
+                      width: 70,
+                      height: 70,
+                      decoration: BoxDecoration(
+                        border: Border.all(width: 1, color: Colors.black),
+                        borderRadius: BorderRadius.circular(100),
+                      ),
+                      child: Image.network(
+                        'http://${backUrlT}${icons[index].image}',
+                        loadingBuilder: (context, child, progress) {
+                          if (progress == null) {
+                            return child;
+                          }
+                          return CircularProgressIndicator(
+                            value: progress.expectedTotalBytes != null
+                                ? progress.cumulativeBytesLoaded /
+                                    progress.expectedTotalBytes!
+                                : null,
+                          );
+                        },
+                      ),
+                    ),
+                  );
+                },
+              ),
+            ),
+            Container(
+              padding: EdgeInsets.only(top: 40, left: 50, right: 50),
+              width: size.width,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    "About you",
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25),
+                  ),
+                  SizedBox(
+                    height: 15,
+                  ),
+                  TextField(
+                    controller: name,
+                    decoration: InputDecoration(
+                      labelText: "Хэрэглэгчийн нэр",
+                      border: UnderlineInputBorder(
+                        borderSide: BorderSide(color: Colors.blue),
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 15,
+                  ),
+                  TextField(
+                    controller: password,
+                    decoration: InputDecoration(
+                      labelText: "Нууц үг",
+                      border: UnderlineInputBorder(
+                        borderSide: BorderSide(color: Colors.blue),
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 15,
+                  ),
+                  TextField(
+                    controller: email,
+                    decoration: InputDecoration(
+                      labelText: "Э-Мэйл хаяг",
+                      border: UnderlineInputBorder(
+                        borderSide: BorderSide(color: Colors.blue),
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  Container(
+                    width: size.width,
+                    child: Center(
+                      child: Container(
+                        width: size.width / 2,
+                        height: 40,
+                        child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.red,
+                          ),
+                          onPressed: () {
+                            userFieldUpdate(context);
+                          },
+                          child: Text(
+                            'Хадгалах',
+                            style: TextStyle(color: Colors.white),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  Container(
+                    width: size.width,
+                    child: Center(
+                      child: Container(
+                        width: size.width / 2,
+                        height: 40,
+                        child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.red,
+                          ),
+                          onPressed: () {
+                            Navigator.pop(context);
                             Navigator.push(
                               context,
                               MaterialPageRoute(
                                   builder: (context) => LoginMain()),
                             );
                           },
-                    child: Text(
-                    "Log out",
-                    style: 
-                    TextStyle(fontWeight: FontWeight.bold, fontSize: 20, color: Colors.red, ),
-                                  ),
-                  ), 
-              ],
+                          child: Text(
+                            'Гарах',
+                            style: TextStyle(color: Colors.white),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

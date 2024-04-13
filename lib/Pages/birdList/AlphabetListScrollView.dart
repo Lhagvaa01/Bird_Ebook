@@ -83,16 +83,15 @@ class _AlphabetListScrollViewState extends State<AlphabetListScrollView> {
         return _buildListItem(item, items2[index]);
       });
   Widget _buildListItem(CountryList item, BirdDatas items2) => GestureDetector(
-   onTap: () {
-Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) =>
-                BirdAbout(data: items2), 
-          ),
-        );
-   },
-    child: ListTile(
+        onTap: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => BirdAbout(data: items2),
+            ),
+          );
+        },
+        child: ListTile(
           leading: Container(
             width: 57,
             height: 100,
@@ -128,5 +127,5 @@ Navigator.push(
           title: Text(item.title),
           subtitle: Text(items2.tCIMAGES!),
         ),
-  );
+      );
 }

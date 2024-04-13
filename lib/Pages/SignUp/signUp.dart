@@ -60,7 +60,7 @@ class _SignUpMainState extends State<SignUpMain> {
             textColor: whiteColor,
             gravity: ToastGravity.BOTTOM,
             length: Toast.LENGTH_LONG);
-            Navigator.pop(context);
+        Navigator.pop(context);
       });
     }
   }
@@ -251,7 +251,7 @@ class _SignUpMainState extends State<SignUpMain> {
                                     height: 40,
                                     child: ElevatedButton(
                                       style: ElevatedButton.styleFrom(
-                                        primary: Colors.red,
+                                        backgroundColor: Colors.red,
                                       ),
                                       onPressed: () {
                                         register(context);
