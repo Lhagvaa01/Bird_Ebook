@@ -1,9 +1,17 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, deprecated_member_use, sized_box_for_whitespace, avoid_print, avoid_unnecessary_containers, unnecessary_new
 
+import 'dart:convert';
 import 'dart:math';
 
+import 'package:bird_ebook/Pages/MainPage/main.dart';
+import 'package:bird_ebook/Pages/profile/proFile.dart';
 import 'package:flutter/material.dart';
+import 'package:nb_utils/nb_utils.dart';
+import 'package:rflutter_alert/rflutter_alert.dart';
 
+import '../../Models/Users.dart';
+import '../../main.dart';
+import '../../post@get/api.dart';
 import '../SignUp/signUp.dart';
 
 class LoginMain extends StatefulWidget {
@@ -14,6 +22,79 @@ class LoginMain extends StatefulWidget {
 }
 
 class _LoginMainState extends State<LoginMain> {
+  final email = TextEditingController();
+  final password = TextEditingController();
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    email.text = "user";
+    password.text = "pass";
+  }
+
+  Users _users = Users();
+
+  login(BuildContext ctx) {
+    if (email.text.isEmpty || password.text.isEmpty) {
+      Alert(
+        context: ctx,
+        title: "Алдаа",
+        desc: "Хэрэглэгчийн нэр болон нууц үг оруулна уу!",
+        buttons: [
+          DialogButton(
+            child: Text(
+              "Хаах",
+              style: TextStyle(color: Colors.white, fontSize: 20),
+            ),
+            onPressed: () => Navigator.pop(ctx),
+          )
+        ],
+      ).show();
+    } else {
+      _users = Users(tCPASSWORD: password.text, tCEMAIL: email.text);
+
+      LoginUserPost(_users, ctx).then((value) {
+        final responseData = jsonDecode(value);
+        final statusCode = responseData['statusCode'];
+        final bodyData = responseData['body'];
+
+        print("statusCode: $statusCode");
+
+        if (statusCode == "200") {
+          final users = Users.fromJson(bodyData);
+          print("Logged in user: ${users.tCUSERNAME}");
+          toasty(ctx, "Амжилттай нэвтэрлээ                                     ",
+            bgColor: Colors.green,
+            textColor: whiteColor,
+            gravity: ToastGravity.BOTTOM,
+            length: Toast.LENGTH_LONG);
+            Navigator.pop(context);
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => HelloConvexAppBar()),
+          );
+
+        } else {
+          Alert(
+            context: ctx,
+            title: "Алдаа",
+            desc: bodyData,
+            buttons: [
+              DialogButton(
+                child: Text(
+                  "Хаах",
+                  style: TextStyle(color: Colors.white, fontSize: 20),
+                ),
+                onPressed: () => Navigator.pop(ctx),
+              )
+            ],
+          ).show();
+        }
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -157,6 +238,7 @@ class _LoginMainState extends State<LoginMain> {
                           child: Column(
                             children: [
                               TextField(
+                                controller: email,
                                 decoration: InputDecoration(
                                   icon: Icon(Icons.person_outlined),
                                   labelText: 'Enter your text',
@@ -169,6 +251,7 @@ class _LoginMainState extends State<LoginMain> {
                                 height: 10,
                               ),
                               TextField(
+                                controller: password,
                                 decoration: InputDecoration(
                                   icon: Icon(Icons.lock),
                                   suffixIcon: Icon(Icons.visibility_off),
@@ -178,14 +261,23 @@ class _LoginMainState extends State<LoginMain> {
                                   ),
                                 ),
                               ),
-                              Container(
-                                width: size.width,
-                                padding: EdgeInsets.all(10),
-                                child: Text(
-                                  textAlign: TextAlign.end,
-                                  "Forget?",
-                                  style: TextStyle(
-                                      fontSize: 15, color: Colors.grey),
+                              GestureDetector(
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => ProFile()),
+                                  );
+                                },
+                                child: Container(
+                                  width: size.width,
+                                  padding: EdgeInsets.all(10),
+                                  child: Text(
+                                    textAlign: TextAlign.end,
+                                    "Forget?",
+                                    style: TextStyle(
+                                        fontSize: 15, color: Colors.grey),
+                                  ),
                                 ),
                               ),
                               SizedBox(
@@ -201,7 +293,9 @@ class _LoginMainState extends State<LoginMain> {
                                       style: ElevatedButton.styleFrom(
                                         primary: Colors.red,
                                       ),
-                                      onPressed: () {},
+                                      onPressed: () {
+                                        login(context);
+                                      },
                                       child: Text('Нэвтрэх'),
                                     ),
                                   ),

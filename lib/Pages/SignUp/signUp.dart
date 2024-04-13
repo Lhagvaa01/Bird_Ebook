@@ -1,8 +1,20 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, deprecated_member_use, sized_box_for_whitespace, avoid_print, avoid_unnecessary_containers, unnecessary_new
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, deprecated_member_use, sized_box_for_whitespace, avoid_print, avoid_unnecessary_containers, unnecessary_new, non_constant_identifier_names, unused_import
 
+import 'dart:convert';
+import 'dart:io';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+
+import '../../Models/Users.dart';
+import '../../constant.dart';
+import '../Login/login.dart';
+import '../SignUp/signUp.dart';
+import 'package:rflutter_alert/rflutter_alert.dart';
+import 'package:http/http.dart' as http;
+// ignore: library_prefixes
+import '../../post@get/api.dart';
+import 'package:nb_utils/nb_utils.dart';
 
 class SignUpMain extends StatefulWidget {
   const SignUpMain({super.key});
@@ -12,6 +24,47 @@ class SignUpMain extends StatefulWidget {
 }
 
 class _SignUpMainState extends State<SignUpMain> {
+  final username = TextEditingController();
+  final password = TextEditingController();
+
+  final cpassword = TextEditingController();
+  final email = TextEditingController();
+
+  Users _users = Users();
+
+  register(BuildContext ctx) {
+    if (username.text.isEmpty) {
+      Alert(
+        context: ctx,
+        title: "Алдаа",
+        desc: "Хэрэглэгчийн нэр оруулна уу!",
+        buttons: [
+          DialogButton(
+            child: Text(
+              "Хаах",
+              style: TextStyle(color: Colors.white, fontSize: 20),
+            ),
+            onPressed: () => Navigator.pop(ctx),
+          )
+        ],
+      ).show();
+    } else {
+      _users = Users(
+          tCUSERNAME: username.text,
+          tCPASSWORD: password.text,
+          tCEMAIL: email.text);
+
+      CreateUserPost(_users, ctx).then((value) {
+        toasty(ctx, "Амжилттай бүртгэгдлээ",
+            bgColor: Colors.green,
+            textColor: whiteColor,
+            gravity: ToastGravity.BOTTOM,
+            length: Toast.LENGTH_LONG);
+            Navigator.pop(context);
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -69,9 +122,8 @@ class _SignUpMainState extends State<SignUpMain> {
               width: 200,
               height: 200,
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(40),
-                border: Border.all(color: Colors.black, width: 12)
-              ),
+                  borderRadius: BorderRadius.circular(40),
+                  border: Border.all(color: Colors.black, width: 12)),
             ),
           ),
           // SizedBox(
@@ -135,9 +187,9 @@ class _SignUpMainState extends State<SignUpMain> {
                 children: [
                   Container(
                     width: size.width - 80,
-                    height: size.height / 2.5,
+                    height: size.height / 1.9,
                     decoration: BoxDecoration(
-                      color: Colors.white,
+                        color: Colors.white,
                         border: Border.all(width: 3, color: Colors.grey),
                         borderRadius: BorderRadius.circular(20)),
                     child: Column(
@@ -147,7 +199,7 @@ class _SignUpMainState extends State<SignUpMain> {
                           padding: EdgeInsets.all(20),
                           child: Text(
                             textAlign: TextAlign.start,
-                            "Sing up",
+                            "Sign up",
                             style: TextStyle(color: Colors.red, fontSize: 30),
                           ),
                         ),
@@ -156,39 +208,40 @@ class _SignUpMainState extends State<SignUpMain> {
                           child: Column(
                             children: [
                               TextField(
+                                controller: username,
                                 decoration: InputDecoration(
-                                  icon: Icon(Icons.person_outlined),
-                                  labelText: 'Enter your text',
-                                  border: UnderlineInputBorder(
-                                    borderSide: BorderSide(color: Colors.blue),
-                                  ),
-                                ),
+                                    labelText: 'Username',
+                                    border: OutlineInputBorder()),
                               ),
                               SizedBox(
                                 height: 10,
                               ),
                               TextField(
+                                controller: email,
                                 decoration: InputDecoration(
-                                  icon: Icon(Icons.lock),
-                                  suffixIcon: Icon(Icons.visibility_off),
-                                  labelText: 'Enter your text',
-                                  border: UnderlineInputBorder(
-                                    borderSide: BorderSide(color: Colors.blue),
-                                  ),
-                                ),
-                              ),
-                              Container(
-                                width: size.width,
-                                padding: EdgeInsets.all(10),
-                                child: Text(
-                                  textAlign: TextAlign.end,
-                                  "Forget?",
-                                  style: TextStyle(
-                                      fontSize: 15, color: Colors.grey),
-                                ),
+                                    labelText: 'Email',
+                                    border: OutlineInputBorder()),
                               ),
                               SizedBox(
                                 height: 15,
+                              ),
+                              TextField(
+                                controller: password,
+                                decoration: InputDecoration(
+                                    labelText: 'Password',
+                                    border: OutlineInputBorder()),
+                              ),
+                              SizedBox(
+                                height: 15,
+                              ),
+                              TextField(
+                                controller: cpassword,
+                                decoration: InputDecoration(
+                                    labelText: 'Confirm Password',
+                                    border: OutlineInputBorder()),
+                              ),
+                              SizedBox(
+                                height: 20,
                               ),
                               Container(
                                 width: size.width,
@@ -201,12 +254,7 @@ class _SignUpMainState extends State<SignUpMain> {
                                         primary: Colors.red,
                                       ),
                                       onPressed: () {
-                                        Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                              builder: (context) =>
-                                                  SignUpMain()),
-                                        );
+                                        register(context);
                                       },
                                       child: Text('Бүртгүүлэх'),
                                     ),
@@ -219,26 +267,34 @@ class _SignUpMainState extends State<SignUpMain> {
                       ],
                     ),
                   ),
-                  Container(
-                    // padding: EdgeInsets.all(20),
-                    width: size.width - 120,
-                    height: 40,
-                    decoration: BoxDecoration(
-                      // color: Colors.amber,
-                      border: Border.all(width: 3, color: Colors.red),
-                      borderRadius: BorderRadius.only(
-                        topLeft: Radius.zero,
-                        topRight: Radius.zero,
-                        bottomLeft: Radius.circular(20),
-                        bottomRight: Radius.circular(20),
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => LoginMain()),
+                      );
+                    },
+                    child: Container(
+                      // padding: EdgeInsets.all(20),
+                      width: size.width - 120,
+                      height: 40,
+                      decoration: BoxDecoration(
+                        // color: Colors.amber,
+                        border: Border.all(width: 3, color: Colors.red),
+                        borderRadius: BorderRadius.only(
+                          topLeft: Radius.zero,
+                          topRight: Radius.zero,
+                          bottomLeft: Radius.circular(20),
+                          bottomRight: Radius.circular(20),
+                        ),
                       ),
-                    ),
-                    child:
-                        // Text("")
-                        Center(
-                      child: Text(
-                        "Login",
-                        style: TextStyle(color: Colors.red, fontSize: 25),
+                      child:
+                          // Text("")
+                          Center(
+                        child: Text(
+                          "Login",
+                          style: TextStyle(color: Colors.red, fontSize: 25),
+                        ),
                       ),
                     ),
                   )
