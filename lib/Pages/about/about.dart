@@ -17,6 +17,8 @@ class BirdAbout extends StatefulWidget {
 class _BirdAboutState extends State<BirdAbout> {
   AudioPlayer player = AudioPlayer();
   bool isPlay = false;
+  
+  var isLoading= false;
 
   Future<void> playAudioUrl(String url) async {
     await player.play(UrlSource(url));
@@ -87,12 +89,9 @@ class _BirdAboutState extends State<BirdAbout> {
                   if (progress == null) {
                     return child;
                   }
-                  return CircularProgressIndicator(
-                    value: progress.expectedTotalBytes != null
-                        ? progress.cumulativeBytesLoaded /
-                            progress.expectedTotalBytes!
-                        : null,
-                  );
+                  return Container();
+                  // retur
+                  
                 },
               ),
             ),
@@ -297,12 +296,13 @@ class _BirdAboutState extends State<BirdAbout> {
                         if (progress == null) {
                           return child;
                         }
-                        return CircularProgressIndicator(
-                          value: progress.expectedTotalBytes != null
-                              ? progress.cumulativeBytesLoaded /
-                                  progress.expectedTotalBytes!
-                              : null,
-                        );
+                        return Container();
+                        // return CircularProgressIndicator(
+                        //   value: progress.expectedTotalBytes != null
+                        //       ? progress.cumulativeBytesLoaded /
+                        //           progress.expectedTotalBytes!
+                        //       : null,
+                        // );
                       },
                     ),
                   ),

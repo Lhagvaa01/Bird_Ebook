@@ -29,6 +29,8 @@ class _SignUpMainState extends State<SignUpMain> {
 
   final cpassword = TextEditingController();
   final email = TextEditingController();
+  var isVisiblity = false;
+  var isVisiblityC = false;
 
   Users _users = Users();
 
@@ -227,8 +229,14 @@ class _SignUpMainState extends State<SignUpMain> {
                               ),
                               TextField(
                                 controller: password,
+                                obscureText: isVisiblity ? true : false,
                                 decoration: InputDecoration(
                                     labelText: 'Password',
+                                    suffixIcon: IconButton(onPressed: (){
+                                    setState(() {
+                                      isVisiblity = !isVisiblity;
+                                    });
+                                  }, icon: isVisiblity ? Icon(Icons.visibility_off) : Icon(Icons.visibility),),
                                     border: OutlineInputBorder()),
                               ),
                               SizedBox(
@@ -236,8 +244,14 @@ class _SignUpMainState extends State<SignUpMain> {
                               ),
                               TextField(
                                 controller: cpassword,
+                                obscureText: isVisiblityC ? true : false,
                                 decoration: InputDecoration(
                                     labelText: 'Confirm Password',
+                                    suffixIcon: IconButton(onPressed: (){
+                                    setState(() {
+                                      isVisiblityC = !isVisiblityC;
+                                    });
+                                  }, icon: isVisiblityC ? Icon(Icons.visibility_off) : Icon(Icons.visibility),),
                                     border: OutlineInputBorder()),
                               ),
                               SizedBox(

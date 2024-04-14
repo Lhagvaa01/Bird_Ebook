@@ -22,6 +22,7 @@ class _EditProfileState extends State<EditProfile> {
   final email = TextEditingController();
   final password = TextEditingController();
   final name = TextEditingController();
+  var isVisiblity = true;
 
   @override
   void initState() {
@@ -202,8 +203,15 @@ class _EditProfileState extends State<EditProfile> {
                   ),
                   TextField(
                     controller: password,
+                                obscureText: isVisiblity ? true : false,
                     decoration: InputDecoration(
                       labelText: "Нууц үг",
+                        suffixIcon: IconButton(onPressed: (){
+                                    setState(() {
+                                      isVisiblity = !isVisiblity;
+                                    });
+                                  }, icon: isVisiblity ? Icon(Icons.visibility_off) : Icon(Icons.visibility),),
+                                   
                       border: UnderlineInputBorder(
                         borderSide: BorderSide(color: Colors.blue),
                       ),

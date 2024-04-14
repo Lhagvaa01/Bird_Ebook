@@ -25,7 +25,7 @@ class LoginMain extends StatefulWidget {
 class _LoginMainState extends State<LoginMain> {
   final email = TextEditingController();
   final password = TextEditingController();
-
+  var isVisiblity = false;
   @override
   void initState() {
     // TODO: implement initState
@@ -262,9 +262,14 @@ class _LoginMainState extends State<LoginMain> {
                               ),
                               TextField(
                                 controller: password,
+                                obscureText: isVisiblity ? true : false,
                                 decoration: InputDecoration(
                                   icon: Icon(Icons.lock),
-                                  suffixIcon: Icon(Icons.visibility_off),
+                                  suffixIcon: IconButton(onPressed: (){
+                                    setState(() {
+                                      isVisiblity = !isVisiblity;
+                                    });
+                                  }, icon: isVisiblity ? Icon(Icons.visibility_off) : Icon(Icons.visibility),),
                                   labelText: 'Enter your text',
                                   border: UnderlineInputBorder(
                                     borderSide: BorderSide(color: Colors.blue),
