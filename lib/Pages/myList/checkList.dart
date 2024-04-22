@@ -1,34 +1,37 @@
-// ignore_for_file: avoid_unnecessary_containers, prefer_const_constructors, prefer_const_literals_to_create_immutables, sized_box_for_whitespace, unused_local_variable
+// ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors
 
+import 'package:bird_ebook/Models/BirdDatas.dart';
+import 'package:bird_ebook/Pages/myList/MyList.dart';
 import 'package:flutter/material.dart';
-import 'package:infinite_carousel/infinite_carousel.dart';
 
-import '../../Models/BirdDatas.dart';
-import 'AlphabetListScrollView.dart';
+import '../../Models/MyLists.dart';
+import '../../constant.dart';
+import '../birdList/AlphabetListScrollView.dart';
 
-class Birdlist extends StatefulWidget {
-  final List<BirdDatas> ?birdDataList;
-  const Birdlist({Key? key, this.birdDataList}) : super(key: key);
+class CheckList extends StatefulWidget {
+  final MyLists ?mylist;
+  const CheckList ({required this.mylist, super.key});
 
   @override
-  State<Birdlist> createState() => _BirdlistState();
+  State<CheckList> createState() => _CheckListState();
 }
 
+class _CheckListState extends State<CheckList > {
 List<String> BirdNames = [];
-
-
-class _BirdlistState extends State<Birdlist> {
-  @override
+List<BirdDatas> birdDataList = [];
+@override
   void initState() {
     super.initState();
     BirdNames = [];
-    for(var name in widget.birdDataList!){
-      BirdNames.add(name.tCBIRDNAME!);
+    for(var data in datas){
+      if(widget.mylist!.tCBIRDPK!.contains(data.pk)){
+        BirdNames.add(data.tCBIRDNAME!);
+        birdDataList.add(data);
+      }
     }
-    print(widget.birdDataList!);
+    print(BirdNames);
+    print(birdDataList);
   }
-  
-  
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -63,7 +66,7 @@ class _BirdlistState extends State<Birdlist> {
           ),
         ),
       ),
-      body: AlphabetListScrollView(items: BirdNames, birdDataList: widget.birdDataList),
+      body: AlphabetListScrollView(items: BirdNames, birdDataList: birdDataList),
       
     );
   }

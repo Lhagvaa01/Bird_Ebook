@@ -4,6 +4,7 @@ import 'dart:convert';
 import 'dart:math';
 
 import 'package:bird_ebook/Pages/MainPage/main.dart';
+import 'package:bird_ebook/Pages/forget/forget.dart';
 import 'package:bird_ebook/Pages/profile/proFile.dart';
 import 'package:flutter/material.dart';
 import 'package:nb_utils/nb_utils.dart';
@@ -30,8 +31,8 @@ class _LoginMainState extends State<LoginMain> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    email.text = "user";
-    password.text = "pass";
+    email.text = "maahaliuk@gmail.com";
+    password.text = "maa";
   }
 
   Users _users = Users();
@@ -239,7 +240,7 @@ class _LoginMainState extends State<LoginMain> {
                           padding: EdgeInsets.all(20),
                           child: Text(
                             textAlign: TextAlign.start,
-                            "Login",
+                            "Нэвтрэх",
                             style: TextStyle(color: Colors.red, fontSize: 30),
                           ),
                         ),
@@ -251,7 +252,7 @@ class _LoginMainState extends State<LoginMain> {
                                 controller: email,
                                 decoration: InputDecoration(
                                   icon: Icon(Icons.person_outlined),
-                                  labelText: 'Enter your text',
+                                  labelText: 'Нэвтрэх нэр',
                                   border: UnderlineInputBorder(
                                     borderSide: BorderSide(color: Colors.blue),
                                   ),
@@ -265,12 +266,17 @@ class _LoginMainState extends State<LoginMain> {
                                 obscureText: isVisiblity ? true : false,
                                 decoration: InputDecoration(
                                   icon: Icon(Icons.lock),
-                                  suffixIcon: IconButton(onPressed: (){
-                                    setState(() {
-                                      isVisiblity = !isVisiblity;
-                                    });
-                                  }, icon: isVisiblity ? Icon(Icons.visibility_off) : Icon(Icons.visibility),),
-                                  labelText: 'Enter your text',
+                                  suffixIcon: IconButton(
+                                    onPressed: () {
+                                      setState(() {
+                                        isVisiblity = !isVisiblity;
+                                      });
+                                    },
+                                    icon: isVisiblity
+                                        ? Icon(Icons.visibility_off)
+                                        : Icon(Icons.visibility),
+                                  ),
+                                  labelText: 'Нууц үг',
                                   border: UnderlineInputBorder(
                                     borderSide: BorderSide(color: Colors.blue),
                                   ),
@@ -288,14 +294,23 @@ class _LoginMainState extends State<LoginMain> {
                                   onTap: () {
                                     getUserIcons(context);
                                   },
-                                  child: Container(
-                                    width: size.width,
-                                    padding: EdgeInsets.all(10),
-                                    child: Text(
-                                      textAlign: TextAlign.end,
-                                      "Forget?",
-                                      style: TextStyle(
-                                          fontSize: 15, color: Colors.grey),
+                                  child: GestureDetector(
+                                    onTap: () {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) => Forget()),
+                                      );
+                                    },
+                                    child: Container(
+                                      width: size.width,
+                                      padding: EdgeInsets.all(10),
+                                      child: Text(
+                                        textAlign: TextAlign.end,
+                                        "Нууц үг мартсан?",
+                                        style: TextStyle(
+                                            fontSize: 15, color: Colors.grey),
+                                      ),
                                     ),
                                   ),
                                 ),
@@ -352,8 +367,8 @@ class _LoginMainState extends State<LoginMain> {
                           // Text("")
                           Center(
                         child: Text(
-                          "Sign up",
-                          style: TextStyle(color: Colors.red, fontSize: 25),
+                          "Бүртгүүлэх",
+                          style: TextStyle(color: Colors.red, fontSize: 20),
                         ),
                       ),
                     ),

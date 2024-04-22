@@ -2,11 +2,15 @@
 
 import 'dart:math';
 
+import 'package:bird_ebook/Models/MyLists.dart';
 import 'package:bird_ebook/Pages/editProfile/editProfile.dart';
+import 'package:bird_ebook/Pages/myList/checkList.dart';
 import 'package:bird_ebook/constant.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 import '../../Models/UserIcons.dart';
+import '../../post@get/api.dart';
 
 class ProFile extends StatefulWidget {
   const ProFile({super.key});
@@ -22,6 +26,25 @@ class _ProFileState extends State<ProFile> {
     super.initState();
     filteredItems =
         icons.where((item) => item.id == userField.tCUSERICON).toList();
+    getMyLists(context);
+  }
+
+  getMyLists(BuildContext ctx) {
+    GetMyLists(ctx).then((value) {
+      setState(() {
+        myLists = value;
+        print("icons[0]: ");
+        print(myLists.length);
+      });
+    });
+  }
+
+  int sumNum = 0;
+  String sumBirdNumber() {
+    for (MyLists bird in myLists) {
+      sumNum += bird.tCBIRDPK!.length;
+    }
+    return sumNum.toString();
   }
 
   @override
@@ -33,11 +56,11 @@ class _ProFileState extends State<ProFile> {
           Column(
             children: [
               Container(
-                padding: EdgeInsets.only(top: 30),
+                // padding: EdgeInsets.only(top: 30),
                 child: Image.asset(
-                  "assets/images/zurg1.jpg",
+                  "assets/images/slider1.jpg",
                   fit: BoxFit.cover,
-                  height: size.height / 3.5,
+                  height: size.height / 3,
                 ),
               ),
               SizedBox(
@@ -77,7 +100,7 @@ class _ProFileState extends State<ProFile> {
                             ),
                             child: Center(
                               child: Text(
-                                "Edit Profile",
+                                "Edit profile",
                                 textAlign: TextAlign.center,
                                 style: TextStyle(
                                     color: Colors.white, fontSize: 15),
@@ -94,18 +117,10 @@ class _ProFileState extends State<ProFile> {
                       //  rossAxisAlignment: CrossAxisAlignment.end,
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Row(
-                          children: [
-                            Icon(
-                              Icons.list,
-                              size: 40,
-                            ),
-                            Text(
-                              "Your List",
-                              style: TextStyle(
-                                  fontWeight: FontWeight.bold, fontSize: 35),
-                            )
-                          ],
+                        Text(
+                          "Your list",
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 35),
                         ),
                         Container(
                           width: 100,
@@ -120,7 +135,7 @@ class _ProFileState extends State<ProFile> {
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
                                 Text(
-                                  "13",
+                                  sumBirdNumber(),
                                   // textAlign: TextAlign.center,
                                   style: TextStyle(
                                       color:
@@ -164,156 +179,82 @@ class _ProFileState extends State<ProFile> {
                   child: Column(
                     children: [
                       Container(
-                        height: 70,
+                        height: size.height / 3.5,
                         width: 360,
-                        padding: EdgeInsets.all(5),
-                        decoration: BoxDecoration(
-                            color: Color.fromARGB(245, 218, 218, 215),
-                            borderRadius: BorderRadius.circular(10)),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Container(
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceAround,
-                                children: [
-                                  Text(
-                                    "Ulaanbatar",
-                                    textAlign: TextAlign.center,
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 18),
-                                  ),
-                                  Text(
-                                    "29",
-                                    textAlign: TextAlign.center,
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 20),
-                                  ),
-                                ],
+                        child: ListView.builder(
+                          scrollDirection: Axis.vertical,
+                          itemCount: myLists.length,
+                          itemBuilder: (BuildContext ctx, int index) {
+                            return GestureDetector(
+                              onTap: () {
+                                setState(() {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            CheckList(mylist: myLists[index])),
+                                  );
+                                });
+                              },
+                              child: Container(
+                                // margin: EdgeInsets.symmetric(horizontal: 10),
+                                margin: EdgeInsets.only(bottom: 20),
+                                padding: EdgeInsets.all(10),
+                                width: 70,
+                                height: 70,
+                                decoration: BoxDecoration(
+                                  color: Colors.black12,
+                                  border:
+                                      Border.all(width: 1, color: Colors.white),
+                                  borderRadius: BorderRadius.circular(20),
+                                ),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        FittedBox(
+                                          child: Text(
+                                            myLists[index]
+                                                .tCLISTNAME
+                                                .toString(),
+                                            style: TextStyle(
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 20),
+                                          ),
+                                        ),
+                                        Text(DateFormat('yyyy-MM-dd').format(
+                                            DateTime.parse(
+                                                myLists[index].tCDATE!))),
+                                      ],
+                                    ),
+                                    Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        Text("Нийт хадгалсан шувуу"),
+                                        Text(
+                                          myLists[index]
+                                              .tCBIRDPK!
+                                              .length
+                                              .toString(),
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ),
                               ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      SizedBox(
-                        height: 20,
-                      ),
-                      Container(
-                        height: 70,
-                        width: 360,
-                        padding: EdgeInsets.all(5),
-                        decoration: BoxDecoration(
-                            color: Color.fromARGB(245, 218, 218, 215),
-                            borderRadius: BorderRadius.circular(10)),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Container(
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceAround,
-                                children: [
-                                  Text(
-                                    "Ulaanbatar",
-                                    textAlign: TextAlign.center,
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 18),
-                                  ),
-                                  Text(
-                                    "29",
-                                    textAlign: TextAlign.center,
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 20),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      SizedBox(
-                        height: 20,
-                      ),
-                      Container(
-                        height: 70,
-                        width: 360,
-                        padding: EdgeInsets.all(5),
-                        decoration: BoxDecoration(
-                            color: Color.fromARGB(245, 218, 218, 215),
-                            borderRadius: BorderRadius.circular(10)),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Container(
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceAround,
-                                children: [
-                                  Text(
-                                    "Ulaanbatar",
-                                    textAlign: TextAlign.center,
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 18),
-                                  ),
-                                  Text(
-                                    "29",
-                                    textAlign: TextAlign.center,
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 20),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      SizedBox(
-                        height: 20,
-                      ),
-                      Container(
-                        height: 70,
-                        width: 360,
-                        padding: EdgeInsets.all(5),
-                        decoration: BoxDecoration(
-                            color: Color.fromARGB(245, 218, 218, 215),
-                            borderRadius: BorderRadius.circular(10)),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Container(
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceAround,
-                                children: [
-                                  Text(
-                                    "Ulaanbatar",
-                                    textAlign: TextAlign.center,
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 18),
-                                  ),
-                                  Text(
-                                    "29",
-                                    textAlign: TextAlign.center,
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 20),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ],
+                            );
+                          },
                         ),
                       ),
                     ],

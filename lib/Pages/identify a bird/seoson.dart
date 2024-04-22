@@ -97,7 +97,7 @@ class _SeasonState extends State<Season> {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
-        title: Text("IDENTIFY A BIRD"),
+        title: Text("Дэлгэрэнгүй хайлт"),
         elevation: 0,
         flexibleSpace: Container(
           decoration: BoxDecoration(
@@ -175,7 +175,7 @@ class _SeasonState extends State<Season> {
             padding: EdgeInsets.only(top: 20, right: 60, left: 60),
             width: size.width,
             child: Text(
-              "Season",
+              "Улирал",
               style: TextStyle(
                 fontSize: 20,
                 color: Colors.black,

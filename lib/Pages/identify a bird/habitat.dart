@@ -77,7 +77,7 @@ class _HabitatState extends State<Habitat> {
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading:false,
-        title: Text("IDENTIFY A BIRD"),
+        title: Text("Дэлгэрэнгүй хайлт"),
         elevation: 0,
         flexibleSpace: Container(
           decoration: BoxDecoration(
@@ -100,7 +100,7 @@ class _HabitatState extends State<Habitat> {
             padding: EdgeInsets.only(top: 35, left: 60, right: 60),
           ),
           Text(
-            "Use these filters to find the bird you are looking for",
+            "Эдгээр шүүлтүүрийг ашиглан хайж буй шувуугаа олоорой",
             textAlign: TextAlign.center,
             style: TextStyle(
               fontSize: 20,
@@ -158,7 +158,7 @@ class _HabitatState extends State<Habitat> {
             padding: EdgeInsets.only(top: 20, right: 60, left: 60),
             width: size.width,
             child: Text(
-              "Habitat",
+              "Амьдрах орчин",
               style: TextStyle(
                 fontSize: 20,
                 color: Colors.black,

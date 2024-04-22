@@ -6,13 +6,15 @@ class Users {
   String? tCPASSWORD;
   String? tCEMAIL;
   int? tCUSERICON;
+  int? otpC;
 
   Users(
       {this.id,
       this.tCUSERNAME,
       this.tCPASSWORD,
       this.tCEMAIL,
-      this.tCUSERICON});
+      this.tCUSERICON,
+      this.otpC});
 
   Users.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -20,6 +22,7 @@ class Users {
     tCPASSWORD = json['TCPASSWORD'];
     tCEMAIL = json['TCEMAIL'];
     tCUSERICON = json['TCUSERICON'];
+    otpC = json['otp'];
   }
 
   Map<String, dynamic> toJson() {
@@ -29,6 +32,7 @@ class Users {
     data['TCPASSWORD'] = this.tCPASSWORD;
     data['TCEMAIL'] = this.tCEMAIL;
     data['TCUSERICON'] = this.tCUSERICON;
+    data['otp'] = this.otpC;
     return data;
   }
 

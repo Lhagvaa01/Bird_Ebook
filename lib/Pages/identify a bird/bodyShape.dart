@@ -11,14 +11,14 @@ class BodyShape extends StatefulWidget {
 }
 
 class _BodyShapeState extends State<BodyShape> {
+  int selectedIndex = -1;
   @override
-  
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
-        automaticallyImplyLeading:false,
-        title: Text("IDENTIFY A BIRD"),
+        automaticallyImplyLeading: false,
+        title: Text("Дэлгэрэнгүй хайлт"),
         elevation: 0,
         flexibleSpace: Container(
           decoration: BoxDecoration(
@@ -34,7 +34,6 @@ class _BodyShapeState extends State<BodyShape> {
           ),
         ),
         centerTitle: true,
-      
       ),
       body: Column(
         children: [
@@ -42,7 +41,7 @@ class _BodyShapeState extends State<BodyShape> {
             padding: EdgeInsets.only(top: 35, left: 60, right: 60),
           ),
           Text(
-            "Use these filters to find the bird you are looking for",
+            "Эдгээр шүүлтүүрийг ашиглан хайж буй шувуугаа олоорой",
             textAlign: TextAlign.center,
             style: TextStyle(
               fontSize: 20,
@@ -100,11 +99,30 @@ class _BodyShapeState extends State<BodyShape> {
             padding: EdgeInsets.only(top: 20, right: 60, left: 60),
             width: size.width,
             child: Text(
-              "Body Shape",
+              "Биеийн хэлбэр",
               style: TextStyle(
                 fontSize: 20,
                 color: Colors.black,
               ),
+            ),
+          ),
+          Expanded(
+            child: GridView(
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 3,
+              ),
+              children: [
+                 buildImage(0, "assets/images/body_shape1.PNG"),
+                 buildImage(1, "assets/images/bodu_shape2.PNG"),
+                 buildImage(2, "assets/images/bodu_shape3.PNG"),
+                 buildImage(3, "assets/images/bodu_shape4.PNG"),
+                 buildImage(4, "assets/images/bodu_shape5.PNG"),
+                 buildImage(5, "assets/images/bodu_shape6.PNG"),
+                 buildImage(6, "assets/images/bodu_shape7.PNG"),
+                 buildImage(7, "assets/images/bodu_shape8.PNG"),
+                 buildImage(8, "assets/images/bodu_shape9.PNG"),
+                 
+              ],
             ),
           ),
           Container(
@@ -138,8 +156,23 @@ class _BodyShapeState extends State<BodyShape> {
               ],
             ),
           ),
-     ],
+        ],
+      ),
+    );
+  }
+  Widget buildImage(int index, String imagePath) {
+    return GestureDetector(
+      onTap: () {
+        setState(() {
+          selectedIndex = index;
+        });
+      },
+      child: Container(
+        color: index == selectedIndex ? Color.fromARGB(255, 180, 180, 180) : Colors.transparent,
+        child: Image.asset(imagePath),
       ),
     );
   }
 }
+
+

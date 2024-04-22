@@ -54,7 +54,9 @@ class _SignUpMainState extends State<SignUpMain> {
       _users = Users(
           tCUSERNAME: username.text,
           tCPASSWORD: password.text,
-          tCEMAIL: email.text);
+          tCEMAIL: email.text,
+          tCUSERICON: 6
+          );
 
       CreateUserPost(_users, ctx).then((value) {
         toasty(ctx, "Амжилттай бүртгэгдлээ",
@@ -201,7 +203,7 @@ class _SignUpMainState extends State<SignUpMain> {
                           padding: EdgeInsets.all(20),
                           child: Text(
                             textAlign: TextAlign.start,
-                            "Sign up",
+                            "Бүртгүүлэх",
                             style: TextStyle(color: Colors.red, fontSize: 30),
                           ),
                         ),
@@ -212,7 +214,7 @@ class _SignUpMainState extends State<SignUpMain> {
                               TextField(
                                 controller: username,
                                 decoration: InputDecoration(
-                                    labelText: 'Username',
+                                    labelText: 'Нэр',
                                     border: OutlineInputBorder()),
                               ),
                               SizedBox(
@@ -221,7 +223,7 @@ class _SignUpMainState extends State<SignUpMain> {
                               TextField(
                                 controller: email,
                                 decoration: InputDecoration(
-                                    labelText: 'Email',
+                                    labelText: 'И-Мэйл',
                                     border: OutlineInputBorder()),
                               ),
                               SizedBox(
@@ -231,7 +233,7 @@ class _SignUpMainState extends State<SignUpMain> {
                                 controller: password,
                                 obscureText: isVisiblity ? true : false,
                                 decoration: InputDecoration(
-                                    labelText: 'Password',
+                                    labelText: 'Нууц үг',
                                     suffixIcon: IconButton(onPressed: (){
                                     setState(() {
                                       isVisiblity = !isVisiblity;
@@ -246,7 +248,7 @@ class _SignUpMainState extends State<SignUpMain> {
                                 controller: cpassword,
                                 obscureText: isVisiblityC ? true : false,
                                 decoration: InputDecoration(
-                                    labelText: 'Confirm Password',
+                                    labelText: 'Нууц үг давтах',
                                     suffixIcon: IconButton(onPressed: (){
                                     setState(() {
                                       isVisiblityC = !isVisiblityC;
@@ -306,7 +308,7 @@ class _SignUpMainState extends State<SignUpMain> {
                           // Text("")
                           Center(
                         child: Text(
-                          "Login",
+                          "Нэвтрэх",
                           style: TextStyle(color: Colors.red, fontSize: 25),
                         ),
                       ),

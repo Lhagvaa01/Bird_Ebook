@@ -15,6 +15,7 @@ class BirdDatas {
   String? tCPROFILEIMAGES;
   String? tCLOCATIONIMG;
   String? tCVOICES;
+  bool? isSaved;
 
   BirdDatas(
       {this.pk,
@@ -32,7 +33,8 @@ class BirdDatas {
       this.tCIMAGES,
       this.tCPROFILEIMAGES,
       this.tCLOCATIONIMG,
-      this.tCVOICES});
+      this.tCVOICES,
+      this.isSaved = false});
 
   BirdDatas.fromJson(Map<String, dynamic> json) {
     pk = json['pk'];
@@ -51,6 +53,7 @@ class BirdDatas {
     tCPROFILEIMAGES = json['TCPROFILEIMAGES'];
     tCLOCATIONIMG = json['TCLOCATIONIMG'];
     tCVOICES = json['TCVOICES'];
+    isSaved = false;
   }
 
   Map<String, dynamic> toJson() {

@@ -1,10 +1,14 @@
 // ignore_for_file: unused_local_variable, prefer_const_constructors, prefer_const_literals_to_create_immutables, avoid_unnecessary_containers, sized_box_for_whitespace, unnecessary_brace_in_string_interps
 
+import 'dart:convert';
+
 import 'package:audioplayers/audioplayers.dart';
 import 'package:bird_ebook/Models/BirdDatas.dart';
+import 'package:bird_ebook/Pages/myList/MyList.dart';
 import 'package:flutter/material.dart';
 
 import '../../constant.dart';
+import '../../post@get/api.dart';
 
 class BirdAbout extends StatefulWidget {
   final BirdDatas data;
@@ -17,8 +21,8 @@ class BirdAbout extends StatefulWidget {
 class _BirdAboutState extends State<BirdAbout> {
   AudioPlayer player = AudioPlayer();
   bool isPlay = false;
-  
-  var isLoading= false;
+
+  var isLoading = false;
 
   Future<void> playAudioUrl(String url) async {
     await player.play(UrlSource(url));
@@ -42,12 +46,28 @@ class _BirdAboutState extends State<BirdAbout> {
     player.stop();
   }
 
+  removeList(String birdPk, BuildContext ctx) {
+    removeBirdLists(birdPk, userField.id, ctx).then((value) {
+      setState(() {
+        print("value: ");
+        print(value);
+        var json = jsonDecode(value);
+        
+        print("json['statusCode']: ");
+        print(json['statusCode']);
+        if(json['statusCode'] == "200"){
+          widget.data.isSaved = false;
+        }
+      });
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
-        title: Text("ABOUT"),
+        title: Text("Дэлгэрэнгүй мэдээлэл"),
         elevation: 0,
         flexibleSpace: Container(
           decoration: BoxDecoration(
@@ -91,7 +111,6 @@ class _BirdAboutState extends State<BirdAbout> {
                   }
                   return Container();
                   // retur
-                  
                 },
               ),
             ),
@@ -104,8 +123,29 @@ class _BirdAboutState extends State<BirdAbout> {
                       widget.data.tCBIRDNAME!,
                       style: TextStyle(fontSize: 30),
                     ),
-                    Image.asset(
-                      "assets/icons/save.png",
+                    GestureDetector(
+                      onTap: () {
+                        saveBirdPk = widget.data.pk.toString();
+                        if (!widget.data.isSaved!) {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => MyList()),
+                          );
+                          setState(() {
+                            if (isSaved) {
+                              widget.data.isSaved = true;
+                            }
+                          });
+                        } else {
+                          removeList(saveBirdPk, context);
+                        }
+                      },
+                      child: Image.asset(
+                        widget.data.isSaved!
+                            // ignore: dead_code
+                            ? "assets/icons/save.png"
+                            : "assets/icons/unsave.png",
+                      ),
                     ),
                   ],
                 )),
@@ -163,7 +203,7 @@ class _BirdAboutState extends State<BirdAbout> {
                     padding: EdgeInsets.all(20),
                     width: size.width,
                     child: Text(
-                      "Specifications",
+                      "Үзүүлэлтүүд",
                       style: TextStyle(fontSize: 20),
                       textAlign: TextAlign.start,
                     ),
@@ -185,7 +225,7 @@ class _BirdAboutState extends State<BirdAbout> {
                             children: [
                               FittedBox(
                                 child: Text(
-                                  "Size",
+                                  "Хэмжээ",
                                   textAlign: TextAlign.center,
                                   style: TextStyle(fontWeight: FontWeight.bold),
                                 ),
@@ -213,7 +253,7 @@ class _BirdAboutState extends State<BirdAbout> {
                             children: [
                               FittedBox(
                                 child: Text(
-                                  "Life expectancy",
+                                  "Наслалт",
                                   textAlign: TextAlign.center,
                                   style: TextStyle(fontWeight: FontWeight.bold),
                                 ),
@@ -241,7 +281,7 @@ class _BirdAboutState extends State<BirdAbout> {
                             children: [
                               FittedBox(
                                 child: Text(
-                                  "Living Environment",
+                                  "Амьдрах орчин",
                                   textAlign: TextAlign.center,
                                   style: TextStyle(fontWeight: FontWeight.bold),
                                 ),
@@ -272,7 +312,7 @@ class _BirdAboutState extends State<BirdAbout> {
                   Container(
                     width: size.width,
                     child: Text(
-                      "Description",
+                      "Тодорхойлолт",
                       style: TextStyle(fontSize: 20),
                       textAlign: TextAlign.start,
                     ),
@@ -285,7 +325,7 @@ class _BirdAboutState extends State<BirdAbout> {
                     ),
                   ),
                   SizedBox(
-                    height: 20,
+                    height: 40,
                   ),
                   Container(
                     width: size.width,
