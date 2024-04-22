@@ -52,10 +52,10 @@ class _BirdAboutState extends State<BirdAbout> {
         print("value: ");
         print(value);
         var json = jsonDecode(value);
-        
+
         print("json['statusCode']: ");
         print(json['statusCode']);
-        if(json['statusCode'] == "200"){
+        if (json['statusCode'] == "200") {
           widget.data.isSaved = false;
         }
       });
@@ -327,25 +327,27 @@ class _BirdAboutState extends State<BirdAbout> {
                   SizedBox(
                     height: 40,
                   ),
-                  Container(
-                    width: size.width,
-                    child: Image.network(
-                      fit: BoxFit.fill,
-                      'http://${backUrl}/media/${widget.data.tCLOCATIONIMG}',
-                      loadingBuilder: (context, child, progress) {
-                        if (progress == null) {
-                          return child;
-                        }
-                        return Container();
-                        // return CircularProgressIndicator(
-                        //   value: progress.expectedTotalBytes != null
-                        //       ? progress.cumulativeBytesLoaded /
-                        //           progress.expectedTotalBytes!
-                        //       : null,
-                        // );
-                      },
-                    ),
-                  ),
+                  widget.data.tCLOCATIONIMG != null
+                      ? Container(
+                          width: size.width,
+                          child: Image.network(
+                            fit: BoxFit.fill,
+                            'http://${backUrl}/media/${widget.data.tCLOCATIONIMG}',
+                            loadingBuilder: (context, child, progress) {
+                              if (progress == null) {
+                                return child;
+                              }
+                              // return Container();
+                              return CircularProgressIndicator(
+                                value: progress.expectedTotalBytes != null
+                                    ? progress.cumulativeBytesLoaded /
+                                        progress.expectedTotalBytes!
+                                    : null,
+                              );
+                            },
+                          ),
+                        )
+                      : Container(),
                 ],
               ),
             ),

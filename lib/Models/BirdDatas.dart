@@ -1,3 +1,5 @@
+// ignore_for_file: unnecessary_new, prefer_collection_literals, unnecessary_this
+
 class BirdDatas {
   int? pk;
   String? tCBIRDFAMILYPK;
@@ -34,7 +36,7 @@ class BirdDatas {
       this.tCPROFILEIMAGES,
       this.tCLOCATIONIMG,
       this.tCVOICES,
-      this.isSaved = false});
+      this.isSaved});
 
   BirdDatas.fromJson(Map<String, dynamic> json) {
     pk = json['pk'];
@@ -53,7 +55,7 @@ class BirdDatas {
     tCPROFILEIMAGES = json['TCPROFILEIMAGES'];
     tCLOCATIONIMG = json['TCLOCATIONIMG'];
     tCVOICES = json['TCVOICES'];
-    isSaved = false;
+    isSaved = this.isSaved;
   }
 
   Map<String, dynamic> toJson() {

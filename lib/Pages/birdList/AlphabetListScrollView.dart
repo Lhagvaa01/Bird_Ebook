@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_typing_uninitialized_variables, override_on_non_overriding_member, unnecessary_brace_in_string_interps, sort_child_properties_last, prefer_const_constructors
+// ignore_for_file: prefer_typing_uninitialized_variables, override_on_non_overriding_member, unnecessary_brace_in_string_interps, sort_child_properties_last, prefer_const_constructors, sized_box_for_whitespace, prefer_interpolation_to_compose_strings, avoid_print
 
 import 'package:azlistview/azlistview.dart';
 import 'package:bird_ebook/Pages/about/about.dart';
@@ -44,9 +44,13 @@ class AlphabetListScrollView extends StatefulWidget {
 class _AlphabetListScrollViewState extends State<AlphabetListScrollView> {
   List<CountryList> items = [];
   List<BirdDatas> items2 = [];
+  List<BirdDatas> filteredBirdDataList = [];
+  List<CountryList> filteredBirdDataListName = [];
+  final searchField = TextEditingController();
   @override
   void initState() {
     super.initState();
+
     initList(widget.items);
     initList2(widget.birdDataList!);
   }
@@ -61,10 +65,12 @@ class _AlphabetListScrollViewState extends State<AlphabetListScrollView> {
   void initList(List<String> items) {
     this.items =
         items.map((item) => CountryList(title: item, tag: item[0])).toList();
+    filteredBirdDataListName = this.items;
   }
 
   void initList2(List<BirdDatas> birdDataList) {
     this.items2 = birdDataList.toList();
+    filteredBirdDataList = this.items2;
   }
 
   AudioPlayer player = AudioPlayer();
@@ -75,19 +81,77 @@ class _AlphabetListScrollViewState extends State<AlphabetListScrollView> {
   }
 
   @override
-  Widget build(BuildContext context) => AzListView(
-      data: items,
-      itemCount: items.length,
-      itemBuilder: (context, index) {
-        final item = items[index];
-        return _buildListItem(item, items2[index]);
-      });
-  Widget _buildListItem(CountryList item, BirdDatas items2) => GestureDetector(
+  Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
+    return SingleChildScrollView(
+      physics: NeverScrollableScrollPhysics(),
+      child: Column(
+        children: [
+          Container(
+            padding: EdgeInsets.all(20),
+            child: TextField(
+              controller: searchField,
+              decoration: InputDecoration(
+                prefixIcon: Icon(Icons.search),
+                suffixIcon: IconButton(
+                    onPressed: () {
+                      setState(() {
+                        searchField.clear();
+                        filteredBirdDataList = items2;
+                        filteredBirdDataListName = items;
+                      });
+                    },
+                    icon: Icon(Icons.close)),
+                // icon: Icon(Icons.person_outlined),
+                hintText: 'Нэрээр хайлт хийнэ үү',
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(15),
+                  borderSide: BorderSide(color: Colors.blue),
+                ),
+              ),
+              onChanged: (value) {
+                setState(() {
+                  // Filter the birdDataList based on the entered search text
+                  filteredBirdDataList = items2
+                      .where((bird) => bird.tCBIRDNAME!
+                          .toLowerCase()
+                          .contains(value.toLowerCase()))
+                      .toList();
+                  filteredBirdDataListName = items
+                      .where((bird) => bird.title
+                          .toLowerCase()
+                          .contains(value.toLowerCase()))
+                      .toList();
+
+                  print("filteredBirdDataList.length");
+                  print(filteredBirdDataList.length);
+                });
+              },
+            ),
+          ),
+          Container(
+            width: size.width,
+            height: size.height - 200,
+            child: AzListView(
+                data: filteredBirdDataListName,
+                itemCount: filteredBirdDataListName.length,
+                itemBuilder: (context, index) {
+                  final item = filteredBirdDataListName[index];
+                  return _buildListItem(item, filteredBirdDataList[index]);
+                }),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildListItem(CountryList item, BirdDatas filteredBirdDataList) =>
+      GestureDetector(
         onTap: () {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => BirdAbout(data: items2),
+              builder: (context) => BirdAbout(data: filteredBirdDataList),
             ),
           );
         },
@@ -98,7 +162,9 @@ class _AlphabetListScrollViewState extends State<AlphabetListScrollView> {
             child: CircularProfileAvatar(
               '',
               child: Image.network(
-                'http://${backUrl}/media/${items2.tCPROFILEIMAGES}',
+                filteredBirdDataList.tCPROFILEIMAGES != null
+                    ? 'http://${backUrl}/media/${filteredBirdDataList.tCPROFILEIMAGES}'
+                    : 'http://${backUrl}/media/${filteredBirdDataList.tCIMAGES}',
                 loadingBuilder: (context, child, progress) {
                   if (progress == null) {
                     return child;
@@ -119,13 +185,14 @@ class _AlphabetListScrollViewState extends State<AlphabetListScrollView> {
           ),
           trailing: IconButton(
             onPressed: () async {
-              final url = 'http://${backUrl}/media/${items2.tCVOICES}';
+              final url =
+                  'http://${backUrl}/media/${filteredBirdDataList.tCVOICES}';
               playAudioUrl(url);
             },
             icon: Icon(Icons.volume_up),
           ),
           title: Text(item.title),
-          subtitle: Text(items2.tCIMAGES!),
+          subtitle: Text("Овгийн нэр: " + filteredBirdDataList.tCBIRDFAMILYPK!),
         ),
       );
 }

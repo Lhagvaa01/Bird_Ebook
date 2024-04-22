@@ -299,37 +299,38 @@ class NavigationDrawer extends StatelessWidget {
                     width: size.width,
                     height: size.height / 4,
                     decoration: BoxDecoration(
-            gradient: LinearGradient(
-              colors: [
-                Color(0xFF860000),
-                Color(0xFFEB1933)
-              ], // Define your gradient colors
-              begin: Alignment.centerRight,
-              end: Alignment.centerLeft,
-              stops: [0.1, 3.5], // Optional: Define color stops
-              // tileMode: TileMode.clamp, // Optional: Define tile mode
-            ),
-          ),
+                      gradient: LinearGradient(
+                        colors: [
+                          Color(0xFF860000),
+                          Color(0xFFEB1933)
+                        ], // Define your gradient colors
+                        begin: Alignment.centerRight,
+                        end: Alignment.centerLeft,
+                        stops: [0.1, 3.5], // Optional: Define color stops
+                        // tileMode: TileMode.clamp, // Optional: Define tile mode
+                      ),
+                    ),
                     child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         CircleAvatar(
-                    radius: 35,
-                    backgroundColor: Colors.white,
-                    child: Image.network(
-                      'http://${backUrlT}${icons[0].image}',
-                      loadingBuilder: (context, child, progress) {
-                        if (progress == null) {
-                          return child;
-                        }
-                        return CircularProgressIndicator(
-                          value: progress.expectedTotalBytes != null
-                              ? progress.cumulativeBytesLoaded /
-                                  progress.expectedTotalBytes!
-                              : null,
-                        );
-                      },
-                    ),
-                  ),
+                          radius: 35,
+                          backgroundColor: Colors.white,
+                          child: Image.network(
+                            'http://${backUrlT}${icons[0].image}',
+                            loadingBuilder: (context, child, progress) {
+                              if (progress == null) {
+                                return child;
+                              }
+                              return CircularProgressIndicator(
+                                value: progress.expectedTotalBytes != null
+                                    ? progress.cumulativeBytesLoaded /
+                                        progress.expectedTotalBytes!
+                                    : null,
+                              );
+                            },
+                          ),
+                        ),
                         SizedBox(
                           width: 20,
                         ),

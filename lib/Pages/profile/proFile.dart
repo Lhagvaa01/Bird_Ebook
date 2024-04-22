@@ -41,6 +41,7 @@ class _ProFileState extends State<ProFile> {
 
   int sumNum = 0;
   String sumBirdNumber() {
+    sumNum = 0;
     for (MyLists bird in myLists) {
       sumNum += bird.tCBIRDPK!.length;
     }
@@ -212,26 +213,28 @@ class _ProFileState extends State<ProFile> {
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
                                   children: [
-                                    Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        FittedBox(
-                                          child: Text(
-                                            myLists[index]
-                                                .tCLISTNAME
-                                                .toString(),
-                                            style: TextStyle(
-                                                fontWeight: FontWeight.bold,
-                                                fontSize: 20),
+                                    FittedBox(
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          FittedBox(
+                                            child: Text(
+                                              myLists[index]
+                                                  .tCLISTNAME
+                                                  .toString(),
+                                              style: TextStyle(
+                                                  fontWeight: FontWeight.bold,
+                                                  fontSize: 20),
+                                            ),
                                           ),
-                                        ),
-                                        Text(DateFormat('yyyy-MM-dd').format(
-                                            DateTime.parse(
-                                                myLists[index].tCDATE!))),
-                                      ],
+                                          Text(DateFormat('yyyy-MM-dd').format(
+                                              DateTime.parse(
+                                                  myLists[index].tCDATE!))),
+                                        ],
+                                      ),
                                     ),
                                     Column(
                                       crossAxisAlignment:
