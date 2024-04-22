@@ -1,4 +1,4 @@
-// ignore_for_file: unused_local_variable, prefer_const_constructors, prefer_const_literals_to_create_immutables, avoid_unnecessary_containers, sized_box_for_whitespace, unnecessary_brace_in_string_interps
+// ignore_for_file: unused_local_variable, prefer_const_constructors, prefer_const_literals_to_create_immutables, avoid_unnecessary_containers, sized_box_for_whitespace, unnecessary_brace_in_string_interps, avoid_print, prefer_conditional_assignment, unnecessary_null_comparison
 
 import 'dart:convert';
 
@@ -37,6 +37,15 @@ class _BirdAboutState extends State<BirdAbout> {
       playAudioUrl(url);
     } else {
       player.stop();
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    print(widget.data.isSaved);
+    if (widget.data.isSaved == null) {
+      widget.data.isSaved = false;
     }
   }
 
@@ -130,11 +139,16 @@ class _BirdAboutState extends State<BirdAbout> {
                           Navigator.push(
                             context,
                             MaterialPageRoute(builder: (context) => MyList()),
-                          );
-                          setState(() {
-                            if (isSaved) {
-                              widget.data.isSaved = true;
-                            }
+                          ).then((value) {
+                            setState(() {
+                              if (isSaved) {
+                                print("isSaved");
+                                print(isSaved);
+                                widget.data.isSaved = true;
+                              }
+
+                              isSaved = false;
+                            });
                           });
                         } else {
                           removeList(saveBirdPk, context);
@@ -327,17 +341,16 @@ class _BirdAboutState extends State<BirdAbout> {
                   SizedBox(
                     height: 40,
                   ),
-                  widget.data.tCLOCATIONIMG != null
-                      ? Container(
-                          width: size.width,
-                          child: Image.network(
-                            fit: BoxFit.fill,
+                  Container(
+                    width: size.width,
+                    child: widget.data.tCLOCATIONIMG != null
+                        ? Image.network(
                             'http://${backUrl}/media/${widget.data.tCLOCATIONIMG}',
+                            fit: BoxFit.fill,
                             loadingBuilder: (context, child, progress) {
                               if (progress == null) {
                                 return child;
                               }
-                              // return Container();
                               return CircularProgressIndicator(
                                 value: progress.expectedTotalBytes != null
                                     ? progress.cumulativeBytesLoaded /
@@ -345,9 +358,9 @@ class _BirdAboutState extends State<BirdAbout> {
                                     : null,
                               );
                             },
-                          ),
-                        )
-                      : Container(),
+                          )
+                        : Container(), // Placeholder or any other widget you want to show if image URL is null
+                  )
                 ],
               ),
             ),

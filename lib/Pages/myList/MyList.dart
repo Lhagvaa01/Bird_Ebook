@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors
+// ignore_for_file: prefer_const_constructors, unused_field, unused_import
 
 import 'dart:convert';
 
@@ -146,20 +146,22 @@ class _MyListState extends State<MyList> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          FittedBox(
-                            child: Text(
-                              myLists[index].tCLISTNAME.toString(),
-                              style: TextStyle(
-                                  fontWeight: FontWeight.bold, fontSize: 20),
+                      FittedBox(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            FittedBox(
+                              child: Text(
+                                myLists[index].tCLISTNAME.toString(),
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold, fontSize: 20),
+                              ),
                             ),
-                          ),
-                          Text(DateFormat('yyyy-MM-dd')
-                              .format(DateTime.parse(myLists[index].tCDATE!))),
-                        ],
+                            Text(DateFormat('yyyy-MM-dd').format(
+                                DateTime.parse(myLists[index].tCDATE!))),
+                          ],
+                        ),
                       ),
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.center,
