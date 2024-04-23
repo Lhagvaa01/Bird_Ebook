@@ -1,5 +1,6 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, deprecated_member_use, sized_box_for_whitespace, avoid_print, avoid_unnecessary_containers, unnecessary_new
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, deprecated_member_use, sized_box_for_whitespace, avoid_print, avoid_unnecessary_containers, unnecessary_new, use_build_context_synchronously
 
+import 'dart:async';
 import 'dart:convert';
 import 'dart:math';
 
@@ -15,6 +16,7 @@ import '../../constant.dart';
 import '../../main.dart';
 import '../../post@get/api.dart';
 import '../SignUp/signUp.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 
 class LoginMain extends StatefulWidget {
   const LoginMain({super.key});
@@ -27,12 +29,22 @@ class _LoginMainState extends State<LoginMain> {
   final email = TextEditingController();
   final password = TextEditingController();
   var isVisiblity = false;
+  Timer? _timer;
+  late double _progress;
+
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     email.text = "maahaliuk@gmail.com";
     password.text = "maa";
+    EasyLoading.addStatusCallback((status) {
+      print('EasyLoading Status $status');
+      if (status == EasyLoadingStatus.dismiss) {
+        _timer?.cancel();
+      }
+    });
+    EasyLoading.showSuccess('Use in initState');
+    // EasyLoading.removeCallbacks();
   }
 
   Users _users = Users();
@@ -56,7 +68,7 @@ class _LoginMainState extends State<LoginMain> {
     } else {
       _users = Users(tCPASSWORD: password.text, tCEMAIL: email.text);
 
-      LoginUserPost(_users, ctx).then((value) {
+      LoginUserPost(_users, ctx).then((value) async {
         final responseData = jsonDecode(value);
         final statusCode = responseData['statusCode'];
         final bodyData = responseData['body'];
@@ -74,12 +86,15 @@ class _LoginMainState extends State<LoginMain> {
               textColor: whiteColor,
               gravity: ToastGravity.BOTTOM,
               length: Toast.LENGTH_LONG);
+          _timer?.cancel();
+          await EasyLoading.dismiss();
           Navigator.pop(context);
           Navigator.push(
             context,
             MaterialPageRoute(builder: (context) => HelloConvexAppBar()),
           );
         } else {
+          await EasyLoading.dismiss();
           Alert(
             context: ctx,
             title: "Алдаа",
@@ -170,211 +185,215 @@ class _LoginMainState extends State<LoginMain> {
           // SizedBox(
           //   height: 200,
           // ),
-          FittedBox(
-            child: Container(
-              width: size.width,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Container(
-                    padding: EdgeInsets.only(top: 50, left: 20),
-                    child: Column(
-                      children: [
-                        Container(
-                          child: Image.asset(
-                            "assets/images/logo.png",
-                            width: size.width / 2,
-                          ),
+          Container(
+            width: size.width,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Container(
+                  padding: EdgeInsets.only(top: 50, left: 20),
+                  child: Column(
+                    children: [
+                      Container(
+                        child: Image.asset(
+                          "assets/images/logo.png",
+                          width: size.width / 2,
                         ),
-                        Container(
-                          child: Text(
-                            "PLANET MONGOLIA",
-                            style: TextStyle(color: Color(0xFFF1DF3F)),
-                          ),
+                      ),
+                      Container(
+                        child: Text(
+                          "PLANET MONGOLIA",
+                          style: TextStyle(color: Color(0xFFF1DF3F)),
                         ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
-                  Container(
-                    height: 45,
-                    width: 80,
-                    margin: EdgeInsets.only(top: 40, right: 30),
-                    padding: EdgeInsets.all(5),
-                    decoration: BoxDecoration(
-                        color: Color(0xFFCAC7C7),
-                        borderRadius: BorderRadius.circular(10)),
-                    child: Row(
-                      children: [
-                        Image.asset(
-                          "assets/icons/usa.png",
-                        ),
-                        Text("ENG"),
-                      ],
-                    ),
+                ),
+                Container(
+                  height: 45,
+                  width: 80,
+                  margin: EdgeInsets.only(top: 40, right: 30),
+                  padding: EdgeInsets.all(5),
+                  decoration: BoxDecoration(
+                      color: Color(0xFFCAC7C7),
+                      borderRadius: BorderRadius.circular(10)),
+                  child: Row(
+                    children: [
+                      Image.asset(
+                        "assets/icons/usa.png",
+                      ),
+                      Text("ENG"),
+                    ],
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
           ),
+
           // SizedBox(
           //   height: 100,
           // ),
-          Expanded(
-            child: Container(
-              padding: EdgeInsets.only(left: 40),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Container(
-                    width: size.width - 80,
-                    height: size.height / 2.5,
-                    decoration: BoxDecoration(
-                        color: Colors.white,
-                        border: Border.all(width: 3, color: Colors.grey),
-                        borderRadius: BorderRadius.circular(20)),
-                    child: Column(
-                      children: [
-                        Container(
-                          width: size.width,
-                          padding: EdgeInsets.all(20),
-                          child: Text(
-                            textAlign: TextAlign.start,
-                            "Нэвтрэх",
-                            style: TextStyle(color: Colors.red, fontSize: 30),
-                          ),
+          Container(
+            padding: EdgeInsets.only(left: 40),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Container(
+                  width: size.width - 80,
+                  height: size.height / 2.5,
+                  decoration: BoxDecoration(
+                      color: Colors.white,
+                      border: Border.all(width: 3, color: Colors.grey),
+                      borderRadius: BorderRadius.circular(20)),
+                  child: Column(
+                    children: [
+                      Container(
+                        width: size.width - 80,
+                        height: 60,
+                        margin: EdgeInsets.only(left: 10, right: 10, top: 10),
+                        child: Text(
+                          textAlign: TextAlign.start,
+                          "Нэвтрэх",
+                          style: TextStyle(color: Colors.red, fontSize: 30),
                         ),
-                        Container(
-                          padding: EdgeInsets.only(left: 20, right: 20),
-                          child: Column(
-                            children: [
-                              TextField(
-                                controller: email,
-                                decoration: InputDecoration(
-                                  icon: Icon(Icons.person_outlined),
-                                  labelText: 'Нэвтрэх нэр',
-                                  border: UnderlineInputBorder(
-                                    borderSide: BorderSide(color: Colors.blue),
-                                  ),
+                      ),
+                      Container(
+                        padding: EdgeInsets.only(left: 20, right: 20),
+                        child: Column(
+                          children: [
+                            TextField(
+                              controller: email,
+                              decoration: InputDecoration(
+                                icon: Icon(Icons.person_outlined),
+                                labelText: 'Нэвтрэх нэр',
+                                border: UnderlineInputBorder(
+                                  borderSide: BorderSide(color: Colors.blue),
                                 ),
                               ),
-                              SizedBox(
-                                height: 10,
-                              ),
-                              TextField(
-                                controller: password,
-                                obscureText: isVisiblity ? true : false,
-                                decoration: InputDecoration(
-                                  icon: Icon(Icons.lock),
-                                  suffixIcon: IconButton(
-                                    onPressed: () {
-                                      setState(() {
-                                        isVisiblity = !isVisiblity;
-                                      });
-                                    },
-                                    icon: isVisiblity
-                                        ? Icon(Icons.visibility_off)
-                                        : Icon(Icons.visibility),
-                                  ),
-                                  labelText: 'Нууц үг',
-                                  border: UnderlineInputBorder(
-                                    borderSide: BorderSide(color: Colors.blue),
-                                  ),
+                            ),
+                            SizedBox(
+                              height: 10,
+                            ),
+                            TextField(
+                              controller: password,
+                              obscureText: isVisiblity ? true : false,
+                              decoration: InputDecoration(
+                                icon: Icon(Icons.lock),
+                                suffixIcon: IconButton(
+                                  onPressed: () {
+                                    setState(() {
+                                      isVisiblity = !isVisiblity;
+                                    });
+                                  },
+                                  icon: isVisiblity
+                                      ? Icon(Icons.visibility_off)
+                                      : Icon(Icons.visibility),
+                                ),
+                                labelText: 'Нууц үг',
+                                border: UnderlineInputBorder(
+                                  borderSide: BorderSide(color: Colors.blue),
                                 ),
                               ),
-                              GestureDetector(
+                            ),
+                            GestureDetector(
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => ProFile()),
+                                );
+                              },
+                              child: GestureDetector(
                                 onTap: () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) => ProFile()),
-                                  );
+                                  getUserIcons(context);
                                 },
                                 child: GestureDetector(
                                   onTap: () {
-                                    getUserIcons(context);
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => Forget()),
+                                    );
                                   },
-                                  child: GestureDetector(
-                                    onTap: () {
-                                      Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) => Forget()),
-                                      );
-                                    },
-                                    child: Container(
-                                      width: size.width,
-                                      padding: EdgeInsets.all(10),
-                                      child: Text(
-                                        textAlign: TextAlign.end,
-                                        "Нууц үг мартсан?",
-                                        style: TextStyle(
-                                            fontSize: 15, color: Colors.grey),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              SizedBox(
-                                height: 15,
-                              ),
-                              Container(
-                                width: size.width,
-                                child: Center(
                                   child: Container(
-                                    width: size.width / 2,
-                                    height: 40,
-                                    child: ElevatedButton(
-                                      style: ElevatedButton.styleFrom(
-                                        backgroundColor: Colors.red,
-                                      ),
-                                      onPressed: () {
-                                        login(context);
-                                      },
-                                      child: Text('Нэвтрэх'),
+                                    width: size.width,
+                                    padding: EdgeInsets.all(10),
+                                    child: Text(
+                                      textAlign: TextAlign.end,
+                                      "Нууц үг мартсан?",
+                                      style: TextStyle(
+                                          fontSize: 15, color: Colors.grey),
                                     ),
                                   ),
                                 ),
-                              )
-                            ],
-                          ),
+                              ),
+                            ),
+                            SizedBox(
+                              height: 15,
+                            ),
+                            Container(
+                              width: size.width,
+                              child: Center(
+                                child: Container(
+                                  width: size.width / 2,
+                                  height: 40,
+                                  child: ElevatedButton(
+                                    style: ElevatedButton.styleFrom(
+                                      backgroundColor: Colors.red,
+                                    ),
+                                    onPressed: () async {
+                                      _timer?.cancel();
+                                      await EasyLoading.show(
+                                        status: 'loading...',
+                                        maskType: EasyLoadingMaskType.black,
+                                        // indicator: Indicator()
+                                      );
+                                      login(context);
+                                    },
+                                    child: Text('Нэвтрэх'),
+                                  ),
+                                ),
+                              ),
+                            )
+                          ],
                         ),
-                      ],
+                      ),
+                    ],
+                  ),
+                ),
+                GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => SignUpMain()),
+                    );
+                  },
+                  child: Container(
+                    // padding: EdgeInsets.all(20),
+                    width: size.width - 120,
+                    height: 40,
+                    decoration: BoxDecoration(
+                      // color: Colors.amber,
+                      border: Border.all(width: 3, color: Colors.red),
+                      borderRadius: BorderRadius.only(
+                        topLeft: Radius.zero,
+                        topRight: Radius.zero,
+                        bottomLeft: Radius.circular(20),
+                        bottomRight: Radius.circular(20),
+                      ),
+                    ),
+                    child:
+                        // Text("")
+                        Center(
+                      child: Text(
+                        "Бүртгүүлэх",
+                        style: TextStyle(color: Colors.red, fontSize: 20),
+                      ),
                     ),
                   ),
-                  GestureDetector(
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => SignUpMain()),
-                      );
-                    },
-                    child: Container(
-                      // padding: EdgeInsets.all(20),
-                      width: size.width - 120,
-                      height: 40,
-                      decoration: BoxDecoration(
-                        // color: Colors.amber,
-                        border: Border.all(width: 3, color: Colors.red),
-                        borderRadius: BorderRadius.only(
-                          topLeft: Radius.zero,
-                          topRight: Radius.zero,
-                          bottomLeft: Radius.circular(20),
-                          bottomRight: Radius.circular(20),
-                        ),
-                      ),
-                      child:
-                          // Text("")
-                          Center(
-                        child: Text(
-                          "Бүртгүүлэх",
-                          style: TextStyle(color: Colors.red, fontSize: 20),
-                        ),
-                      ),
-                    ),
-                  )
-                ],
-              ),
+                )
+              ],
             ),
           ),
         ],

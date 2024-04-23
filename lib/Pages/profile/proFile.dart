@@ -11,6 +11,7 @@ import 'package:intl/intl.dart';
 
 import '../../Models/UserIcons.dart';
 import '../../post@get/api.dart';
+import 'package:avatar_glow/avatar_glow.dart';
 
 class ProFile extends StatefulWidget {
   const ProFile({super.key});
@@ -21,6 +22,7 @@ class ProFile extends StatefulWidget {
 
 class _ProFileState extends State<ProFile> {
   List<UserIcons> filteredItems = [];
+  bool _animate = true;
   @override
   void initState() {
     super.initState();
@@ -279,20 +281,34 @@ class _ProFileState extends State<ProFile> {
                     borderRadius: BorderRadius.circular(100),
                     color: Colors.white,
                   ),
-                  child: Image.network(
-                    'http://${backUrlT}${filteredItems[0].image}',
-                    loadingBuilder: (context, child, progress) {
-                      if (progress == null) {
-                        return child;
-                      }
-                      return CircularProgressIndicator(
-                        value: progress.expectedTotalBytes != null
-                            ? progress.cumulativeBytesLoaded /
-                                progress.expectedTotalBytes!
-                            : null,
-                      );
-                    },
+                  child:
+                AvatarGlow(
+                  animate: _animate,
+                  child: Material(
+                    elevation: 8.0,
+                    shape: const CircleBorder(),
+                    child: CircleAvatar(
+                      backgroundColor: Colors.grey[100],
+                      radius: 30,
+                      child: Image.network(
+                        scale: 0.5,
+                        'http://${backUrlT}${filteredItems[0].image}',
+                        loadingBuilder: (context, child, progress) {
+                          if (progress == null) {
+                            return child;
+                          }
+                          return CircularProgressIndicator(
+                            value: progress.expectedTotalBytes != null
+                                ? progress.cumulativeBytesLoaded /
+                                    progress.expectedTotalBytes!
+                                : null,
+                          );
+                        },
+                      ),
+                    ),
                   ),
+                ),
+
                 ),
                 Text(
                   userField.tCUSERNAME!,

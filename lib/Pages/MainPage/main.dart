@@ -1,5 +1,6 @@
-// ignore_for_file: avoid_unnecessary_containers, prefer_const_constructors, prefer_const_literals_to_create_immutables, sized_box_for_whitespace, empty_constructor_bodies
+// ignore_for_file: avoid_unnecessary_containers, prefer_const_constructors, prefer_const_literals_to_create_immutables, sized_box_for_whitespace, empty_constructor_bodies, use_build_context_synchronously
 
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:bird_ebook/Models/BirdDatas.dart';
@@ -8,6 +9,7 @@ import 'package:bird_ebook/Pages/identify%20a%20bird/seoson.dart';
 import 'package:bird_ebook/Pages/profile/proFile.dart';
 import 'package:bird_ebook/constant.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:infinite_carousel/infinite_carousel.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 
@@ -26,6 +28,8 @@ class MainPage extends StatefulWidget {
 class _MainPageState extends State<MainPage> {
   late InfiniteScrollController controller;
   int selectedIndex = 0;
+  Timer? _timer;
+  late double _progress;
 
   @override
   void initState() {
@@ -39,9 +43,9 @@ class _MainPageState extends State<MainPage> {
     controller.dispose();
   }
 
-  getBird(BuildContext ctx) {
+  getBird(BuildContext ctx) async {
     datas.isEmpty
-        ? GetBirds(ctx).then((value) {
+        ? GetBirds(ctx).then((value) async {
             final responseData = jsonDecode(value);
             final statusCode = responseData['statusCode'];
             final bodyData = responseData['body'];
@@ -55,6 +59,9 @@ class _MainPageState extends State<MainPage> {
               }
               // final body = BirdDatas.fromJson(bodyData);
               print(datas);
+
+              _timer?.cancel();
+              await EasyLoading.dismiss();
               Navigator.push(
                 context,
                 MaterialPageRoute(
@@ -63,6 +70,8 @@ class _MainPageState extends State<MainPage> {
                 ),
               );
             } else {
+              _timer?.cancel();
+              EasyLoading.showError('Failed with Error');
               Alert(
                 context: ctx,
                 title: "Алдаа",
@@ -79,13 +88,14 @@ class _MainPageState extends State<MainPage> {
               ).show();
             }
           })
-        : Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) =>
-                  Birdlist(birdDataList: datas), // Pass birdDataList argument
-            ),
-          );
+        : await EasyLoading.dismiss();
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) =>
+            Birdlist(birdDataList: datas), // Pass birdDataList argument
+      ),
+    );
   }
 
   @override
@@ -236,7 +246,13 @@ class _MainPageState extends State<MainPage> {
                           width: 50,
                         ),
                         GestureDetector(
-                          onTap: () {
+                          onTap: () async {
+                            _timer?.cancel();
+                            await EasyLoading.show(
+                              status: 'loading...',
+                              maskType: EasyLoadingMaskType.black,
+                              // indicator: Indicator()
+                            );
                             getBird(context);
                           },
                           child: Container(

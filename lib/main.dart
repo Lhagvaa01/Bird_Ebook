@@ -7,6 +7,7 @@ import 'package:bird_ebook/Pages/profile/proFile.dart';
 import 'package:bird_ebook/constant.dart';
 import 'package:flutter/material.dart';
 import 'package:convex_bottom_bar/convex_bottom_bar.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:nb_utils/nb_utils.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 
@@ -15,7 +16,25 @@ import 'Pages/identify a bird/seoson.dart';
 import '../../post@get/api.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(MyApp());
+  configLoading();
+}
+
+void configLoading() {
+  EasyLoading.instance
+    ..displayDuration = const Duration(milliseconds: 2000)
+    ..indicatorType = EasyLoadingIndicatorType.circle
+    ..loadingStyle = EasyLoadingStyle.light
+    ..indicatorSize = 45.0
+    ..radius = 10.0
+    ..progressColor = Colors.yellow
+    ..backgroundColor = Colors.green
+    ..indicatorColor = Colors.yellow
+    ..textColor = Colors.yellow
+    ..maskColor = Colors.blue.withOpacity(0.5)
+    ..userInteractions = true
+    ..dismissOnTap = false;
+    // ..customAnimation = CustomAnimation();
 }
 
 class MyApp extends StatefulWidget {
@@ -50,6 +69,7 @@ class _MyAppState extends State<MyApp> {
       //   "/explorer": (BuildContext context) => Birdlist(),
       //   "/profile": (BuildContext context) => ProFile(),
       // },
+      builder: EasyLoading.init(),
     );
   }
 }
