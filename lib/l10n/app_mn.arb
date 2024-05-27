@@ -1,0 +1,47 @@
+{
+    "loadingTxt": "Түр хүлээнэ үү...",
+    "loginTxt": "Нэвтрэх",
+    "usernameHint": "Нэвтрэх нэр",
+    "passwordHint": "Нууц үг",
+    "forgetTxt": "Нууц үг мартсан?",
+    "registerTxt": "Бүртгүүлэх",
+    "emailHint": "И-Мэйл хаяг",
+    "repeadPasswordHint": "Нууц үг давтах",
+    "searchButtonTxt": "Дэлгэрэнгүй хайлт",
+    "listButtonTxt": "Жагсаалт",
+    "sightingsTxt": "Үзүүлэлт",
+    "speciesTxt": "Төрөл зүйл",
+    "imagesTxt": "Зураг",
+    "seasonTxt": "Улирал",
+    "bodyShapeTxt": "Биеийн хэлбэр",
+    "bodySizeTxt": "Биеийн хэмжээ",
+    "bodyColorTxt": "Биеийн өнгө",
+    "resultTxt": "Үр дүн",
+    "findbirdTxt": "Эдгээр шүүлтүүрийг ашиглан хайж буй шувуугаа олоорой",
+    "nameSearchTxt": "Нэрээр хайлт хийнэ үү",
+    "detailsTxt": "Дэлгэрэнгүй мэдээлэл",
+    "soundTxt": "Шувууны дуу сонсох",
+    "specificationTxt": "Тодорхойлолт",
+    "indicatorTxt": "Үзүүлэлт",
+    "sizeTxt": "Хэмжээ",
+    "lifespanTxt": "Наслалт",
+    "habitatTxt": "Амьдрах орчин",
+    "favBirdTxt": "Хадгалсан шувуу",
+    "totalTxt": "Нийт хадгалсан шувуу",
+    "editProTxt": "Мэдээлэл засах",
+    "aboutuTxt": "Мэдээлэл",
+    "saveTxt": "Хадгалах",
+    "exitTxt": "Гарах",
+    "familyTxt": "Овгийн нэр",
+    "birdlistTxT": "Шувууны жагсаалт",
+    "searchBtnTxt": "Хайлт"
+    
+
+
+
+   
+    
+   
+   
+   
+}
