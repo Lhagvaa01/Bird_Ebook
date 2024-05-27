@@ -9,6 +9,7 @@ import 'package:flutter/material.dart';
 
 import '../../constant.dart';
 import '../../post@get/api.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class BirdAbout extends StatefulWidget {
   final BirdDatas data;
@@ -76,7 +77,7 @@ class _BirdAboutState extends State<BirdAbout> {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
-        title: Text("Дэлгэрэнгүй мэдээлэл"),
+        title: Text(AppLocalizations.of(context)?.detailsTxt ?? ''),
         elevation: 0,
         flexibleSpace: Container(
           decoration: BoxDecoration(
@@ -170,7 +171,7 @@ class _BirdAboutState extends State<BirdAbout> {
                   Container(
                     width: size.width,
                     child: Text(
-                      "Play Bird Sound",
+                    AppLocalizations.of(context)?.soundTxt ?? '',
                       style: TextStyle(fontSize: 20),
                       textAlign: TextAlign.start,
                     ),
@@ -217,7 +218,7 @@ class _BirdAboutState extends State<BirdAbout> {
                     padding: EdgeInsets.all(20),
                     width: size.width,
                     child: Text(
-                      "Үзүүлэлтүүд",
+                    AppLocalizations.of(context)?.indicatorTxt ?? '',
                       style: TextStyle(fontSize: 20),
                       textAlign: TextAlign.start,
                     ),
@@ -239,7 +240,7 @@ class _BirdAboutState extends State<BirdAbout> {
                             children: [
                               FittedBox(
                                 child: Text(
-                                  "Хэмжээ",
+                                  AppLocalizations.of(context)?.sizeTxt ?? '',
                                   textAlign: TextAlign.center,
                                   style: TextStyle(fontWeight: FontWeight.bold),
                                 ),
@@ -267,7 +268,7 @@ class _BirdAboutState extends State<BirdAbout> {
                             children: [
                               FittedBox(
                                 child: Text(
-                                  "Наслалт",
+                                  AppLocalizations.of(context)?.lifespanTxt ?? '',
                                   textAlign: TextAlign.center,
                                   style: TextStyle(fontWeight: FontWeight.bold),
                                 ),
@@ -295,7 +296,7 @@ class _BirdAboutState extends State<BirdAbout> {
                             children: [
                               FittedBox(
                                 child: Text(
-                                  "Амьдрах орчин",
+                                 AppLocalizations.of(context)?.habitatTxt ?? '',
                                   textAlign: TextAlign.center,
                                   style: TextStyle(fontWeight: FontWeight.bold),
                                 ),
@@ -326,7 +327,7 @@ class _BirdAboutState extends State<BirdAbout> {
                   Container(
                     width: size.width,
                     child: Text(
-                      "Тодорхойлолт",
+                     AppLocalizations.of(context)?.specificationTxt ?? '',
                       style: TextStyle(fontSize: 20),
                       textAlign: TextAlign.start,
                     ),

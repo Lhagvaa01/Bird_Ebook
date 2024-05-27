@@ -5,7 +5,7 @@ import 'package:infinite_carousel/infinite_carousel.dart';
 
 import '../../Models/BirdDatas.dart';
 import 'AlphabetListScrollView.dart';
-
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 class Birdlist extends StatefulWidget {
   final List<BirdDatas>? birdDataList;
   const Birdlist({Key? key, this.birdDataList}) : super(key: key);
@@ -35,7 +35,7 @@ class _BirdlistState extends State<Birdlist> {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
-        title: Text("Шувууны жагсаалт"),
+        title: Text(AppLocalizations.of(context)?.birdlistTxT ?? ''),
         elevation: 0,
         flexibleSpace: Container(
           decoration: BoxDecoration(

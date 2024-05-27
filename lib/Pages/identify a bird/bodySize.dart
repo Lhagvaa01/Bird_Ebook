@@ -4,6 +4,7 @@ import 'package:bird_ebook/Pages/identify%20a%20bird/bodyColor.dart';
 import 'package:bird_ebook/Pages/identify%20a%20bird/bodyShape.dart';
 import 'package:bird_ebook/Pages/identify%20a%20bird/BodySize.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class RoundedRadioButton extends StatelessWidget {
   final bool value;
@@ -51,7 +52,9 @@ class RoundedRadioButton extends StatelessWidget {
 }
 
 class BodySize extends StatefulWidget {
-  const BodySize({Key? key}) : super(key: key);
+  final void Function(Locale) changeLanguage;
+  
+  const BodySize({Key? key, required this.changeLanguage}) : super(key: key);
 
   @override
   State<BodySize> createState() => _BodySizeState();
@@ -74,7 +77,7 @@ class _BodySizeState extends State<BodySize> {
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading : false,
-        title: Text("Дэлгэрэнгүй хайлт"),
+        title: Text(AppLocalizations.of(context)?.searchButtonTxt ?? ''),
         elevation: 0,
         flexibleSpace: Container(
           decoration: BoxDecoration(
@@ -97,7 +100,7 @@ class _BodySizeState extends State<BodySize> {
             padding: EdgeInsets.only(top: 35, left: 60, right: 60),
           ),
           Text(
-            "Эдгээр шүүлтүүрийг ашиглан хайж буй шувуугаа олоорой",
+           AppLocalizations.of(context)?.findbirdTxt ?? '',
             textAlign: TextAlign.center,
             style: TextStyle(
               fontSize: 20,
@@ -155,7 +158,7 @@ class _BodySizeState extends State<BodySize> {
             padding: EdgeInsets.only(top: 20, right: 60, left: 60),
             width: size.width,
             child: Text(
-              "Биеийн хэмжээ",
+              AppLocalizations.of(context)?.bodySizeTxt ?? '',
               style: TextStyle(
                 fontSize: 20,
                 color: Colors.black,
@@ -213,7 +216,7 @@ class _BodySizeState extends State<BodySize> {
                   onTap: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => BodyColor()),
+                      MaterialPageRoute(builder: (context) => BodyColor(changeLanguage: widget.changeLanguage)),
                     );
                   },
                   child: Icon(

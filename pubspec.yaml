@@ -42,10 +42,14 @@ dependencies:
   circular_profile_avatar: ^2.0.5
   audioplayers: ^5.2.1
   convex_bottom_bar: ^3.2.0
-  intl: ^0.19.0
   carousel_slider: ^4.2.1
   avatar_glow: ^3.0.1
   flutter_easyloading: ^3.0.5
+
+  flutter_localizations:
+    sdk: flutter
+    
+  intl: ^0.18.1
 
 dev_dependencies:
   flutter_test:
@@ -66,6 +70,7 @@ flutter:
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
   # the material Icons class.
+  generate: true
   uses-material-design: true
 
   # To add assets to your application, add an assets section, like this:
@@ -74,6 +79,10 @@ flutter:
     - assets/images/Map Images/
     - assets/icons/
   #   - images/a_dot_ham.jpeg
+
+arb-dir: lib/l10n
+template-arb-file: app_en.arb
+output-localization-file: app_localizations.dart
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

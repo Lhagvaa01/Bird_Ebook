@@ -3,6 +3,7 @@
 import 'package:bird_ebook/Pages/identify%20a%20bird/bodyShape.dart';
 import 'package:bird_ebook/Pages/identify%20a%20bird/habitat.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class RoundedRadioButton extends StatelessWidget {
   final bool value;
@@ -50,7 +51,9 @@ class RoundedRadioButton extends StatelessWidget {
 }
 
 class Habitat extends StatefulWidget {
-  const Habitat({Key? key}) : super(key: key);
+  final void Function(Locale) changeLanguage;
+  
+  const Habitat({Key? key, required this.changeLanguage}) : super(key: key);
 
   @override
   State<Habitat> createState() => _HabitatState();
@@ -77,7 +80,7 @@ class _HabitatState extends State<Habitat> {
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading:false,
-        title: Text("Дэлгэрэнгүй хайлт"),
+        title: Text(AppLocalizations.of(context)?.searchButtonTxt ?? ''),
         elevation: 0,
         flexibleSpace: Container(
           decoration: BoxDecoration(
@@ -100,7 +103,7 @@ class _HabitatState extends State<Habitat> {
             padding: EdgeInsets.only(top: 35, left: 60, right: 60),
           ),
           Text(
-            "Эдгээр шүүлтүүрийг ашиглан хайж буй шувуугаа олоорой",
+          AppLocalizations.of(context)?.findbirdTxt ?? '',
             textAlign: TextAlign.center,
             style: TextStyle(
               fontSize: 20,
@@ -158,7 +161,7 @@ class _HabitatState extends State<Habitat> {
             padding: EdgeInsets.only(top: 20, right: 60, left: 60),
             width: size.width,
             child: Text(
-              "Амьдрах орчин",
+              AppLocalizations.of(context)?.habitatTxt ?? '',
               style: TextStyle(
                 fontSize: 20,
                 color: Colors.black,
@@ -216,7 +219,7 @@ class _HabitatState extends State<Habitat> {
                   onTap: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => BodyShape()),
+                      MaterialPageRoute(builder: (context) => BodyShape(changeLanguage:widget.changeLanguage)),
                     );
                   },
                   child: Icon(

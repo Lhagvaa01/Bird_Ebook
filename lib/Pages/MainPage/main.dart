@@ -18,8 +18,13 @@ import '../about/about.dart';
 import '../birdList/birdList.dart';
 import 'slider.dart';
 
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
 class MainPage extends StatefulWidget {
-  const MainPage({Key? key}) : super(key: key);
+  final void Function(Locale) changeLanguage;
+  
+  const MainPage({Key? key, required this.changeLanguage}) : super(key: key);
+  // const MainPage({Key? key}) : super(key: key);
 
   @override
   State<MainPage> createState() => _MainPageState();
@@ -134,7 +139,7 @@ class _MainPageState extends State<MainPage> {
         //   )
         // ],
       ),
-      endDrawer: const NavigationDrawer(),
+      endDrawer: NavigationDrawer(changeLanguage: widget.changeLanguage),
       body: SingleChildScrollView(
         child: Column(
           children: [
@@ -165,7 +170,8 @@ class _MainPageState extends State<MainPage> {
                           width: size.width / 3,
                           child: Column(
                             children: [
-                              Text("Үзүүлэлт"),
+                              Text(
+                          AppLocalizations.of(context)?.indicatorTxt ?? '',),
                               Text("300"),
                             ],
                           ),
@@ -180,13 +186,13 @@ class _MainPageState extends State<MainPage> {
                           ),
                           width: size.width / 3,
                           child: Column(
-                            children: [Text("Төрөл зүйл"), Text("550")],
+                            children: [Text(AppLocalizations.of(context)?.speciesTxt ?? ''), Text("550")],
                           ),
                         ),
                         Container(
                           width: size.width / 3,
                           child: Column(
-                            children: [Text("Зураг"), Text("7000")],
+                            children: [Text(AppLocalizations.of(context)?.imagesTxt ?? ''), Text("7000")],
                           ),
                         ),
                         SizedBox(
@@ -211,7 +217,7 @@ class _MainPageState extends State<MainPage> {
                           onTap: () {
                             Navigator.push(
                               context,
-                              MaterialPageRoute(builder: (context) => Season()),
+                              MaterialPageRoute(builder: (context) => Season(changeLanguage: widget.changeLanguage)),
                             );
                           },
                           child: Container(
@@ -232,7 +238,7 @@ class _MainPageState extends State<MainPage> {
                                   ),
                                 ),
                                 Text(
-                                  "Дэлгэрэнгүй хайлт",
+                                AppLocalizations.of(context)?.searchButtonTxt ?? '',
                                   style: TextStyle(
                                     color: Colors.white,
                                     fontSize: 16,
@@ -274,7 +280,7 @@ class _MainPageState extends State<MainPage> {
                                   ),
                                 ),
                                 Text(
-                                  "Жагсаалт",
+                               AppLocalizations.of(context)?.listButtonTxt ?? '',
                                   style: TextStyle(
                                     color: Colors.white,
                                     fontSize: 16,
@@ -297,9 +303,16 @@ class _MainPageState extends State<MainPage> {
   }
 }
 
-class NavigationDrawer extends StatelessWidget {
-  const NavigationDrawer({Key? key}) : super(key: key);
+class NavigationDrawer extends StatefulWidget {
+  final void Function(Locale) changeLanguage;
 
+  const NavigationDrawer({Key? key, required this.changeLanguage}) : super(key: key);
+
+  @override
+  State<NavigationDrawer> createState() => _NavigationDrawerState();
+}
+
+class _NavigationDrawerState extends State<NavigationDrawer> {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -326,40 +339,84 @@ class NavigationDrawer extends StatelessWidget {
                         // tileMode: TileMode.clamp, // Optional: Define tile mode
                       ),
                     ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.end,
                       children: [
-                        CircleAvatar(
-                          radius: 35,
-                          backgroundColor: Colors.white,
-                          child: Image.network(
-                            'http://${backUrlT}${icons[0].image}',
-                            loadingBuilder: (context, child, progress) {
-                              if (progress == null) {
-                                return child;
-                              }
-                              return CircularProgressIndicator(
-                                value: progress.expectedTotalBytes != null
-                                    ? progress.cumulativeBytesLoaded /
-                                        progress.expectedTotalBytes!
-                                    : null,
-                              );
+                        Container(
+                          // width: size.width,
+                          // color: Colors.amber,
+                          child: GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                if (language == "mn") {
+                                  language = 'en';
+                                  widget.changeLanguage(const Locale('en'));
+                                } else {
+                                  language = 'mn';
+                                  widget.changeLanguage(const Locale('mn'));
+                                }
+                                print(language);
+                              });
                             },
+                            child: Container(
+                              height: 45,
+                              width: 80,
+                              margin: EdgeInsets.only(top: 40, right: 10),
+                              padding: EdgeInsets.all(5),
+                              decoration: BoxDecoration(
+                                color: Color.fromARGB(0, 255, 255, 255),
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                children: [
+                                  Image.asset(
+                                    "assets/icons/usa.png",
+                                  ),
+                                  Text(language.toUpperCase(), style: TextStyle(color: Colors.white),),
+                                ],
+                              ),
+                            ),
                           ),
                         ),
                         SizedBox(
-                          width: 20,
+                          height: 20,
                         ),
-                        Text(
-                          userField.tCUSERNAME.toString(),
-                          style: TextStyle(fontSize: 20, color: Colors.white),
-                        )
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            CircleAvatar(
+                              radius: 35,
+                              backgroundColor: Colors.white,
+                              child: Image.network(
+                                'http://${backUrlT}${icons[0].image}',
+                                loadingBuilder: (context, child, progress) {
+                                  if (progress == null) {
+                                    return child;
+                                  }
+                                  return CircularProgressIndicator(
+                                    value: progress.expectedTotalBytes != null
+                                        ? progress.cumulativeBytesLoaded /
+                                            progress.expectedTotalBytes!
+                                        : null,
+                                  );
+                                },
+                              ),
+                            ),
+                            SizedBox(
+                              width: 20,
+                            ),
+                            Text(
+                              userField.tCUSERNAME.toString(),
+                              style: TextStyle(fontSize: 20, color: Colors.white),
+                            )
+                          ],
+                        ),
                       ],
                     ),
                   ),
-                  SizedBox(
-                    height: 40,
-                  ),
+                  
+                  
                   Container(
                     child: Container(
                       width: size.width / 2,
@@ -379,7 +436,7 @@ class NavigationDrawer extends StatelessWidget {
                             width: 10,
                           ),
                           Text(
-                            "Home",
+                            'Home',
                             textAlign: TextAlign.center,
                             style: TextStyle(
                               color: const Color.fromARGB(255, 0, 0, 0),
@@ -416,7 +473,7 @@ class NavigationDrawer extends StatelessWidget {
                               width: 10,
                             ),
                             Text(
-                              "Хайлт",
+                            AppLocalizations.of(context)?.searchBtnTxt ?? '',
                               textAlign: TextAlign.center,
                               style: TextStyle(
                                 color: const Color.fromARGB(255, 0, 0, 0),
@@ -447,7 +504,7 @@ class NavigationDrawer extends StatelessWidget {
                             width: 10,
                           ),
                           Text(
-                            "Жагсаалт",
+                            AppLocalizations.of(context)?.listButtonTxt ?? '',
                             textAlign: TextAlign.center,
                             style: TextStyle(
                               color: const Color.fromARGB(255, 0, 0, 0),
@@ -462,7 +519,7 @@ class NavigationDrawer extends StatelessWidget {
                     onTap: () {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => ProFile()),
+                        MaterialPageRoute(builder: (context) => ProFile(changeLanguage: widget.changeLanguage)),
                       );
                     },
                     child: Container(
@@ -500,7 +557,7 @@ class NavigationDrawer extends StatelessWidget {
                     onTap: () {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => LoginMain()),
+                        MaterialPageRoute(builder: (context) => LoginMain(changeLanguage: widget.changeLanguage)),
                       );
                     },
                     child: Container(
@@ -523,7 +580,7 @@ class NavigationDrawer extends StatelessWidget {
                               width: 10,
                             ),
                             Text(
-                              "Гарах",
+                             AppLocalizations.of(context)?.exitTxt ?? '',
                               textAlign: TextAlign.center,
                               style: TextStyle(
                                 color: const Color.fromARGB(255, 0, 0, 0),

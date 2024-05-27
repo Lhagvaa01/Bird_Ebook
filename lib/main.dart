@@ -14,6 +14,9 @@ import 'package:rflutter_alert/rflutter_alert.dart';
 import 'Models/UserIcons.dart';
 import 'Pages/identify a bird/seoson.dart';
 import '../../post@get/api.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:bird_ebook/l10n/l10n.dart';
 
 void main() {
   runApp(MyApp());
@@ -34,17 +37,16 @@ void configLoading() {
     ..maskColor = Colors.blue.withOpacity(0.5)
     ..userInteractions = true
     ..dismissOnTap = false;
-    // ..customAnimation = CustomAnimation();
 }
 
 class MyApp extends StatefulWidget {
   const MyApp({super.key});
 
   @override
-  State<MyApp> createState() => _MyAppState();
+  State<MyApp> createState() => MyAppState();
 }
 
-class _MyAppState extends State<MyApp> {
+class MyAppState extends State<MyApp> {
   @override
   void initState() {
     super.initState();
@@ -57,24 +59,40 @@ class _MyAppState extends State<MyApp> {
     });
   }
 
+  Locale _locale = const Locale('en');
+
+  void _changeLanguage(Locale newLocale) {
+    setState(() {
+      _locale = newLocale;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: const LoginMain(),
-      // initialRoute: "/",
-      // routes: {
-      //   "/": (_) => HelloConvexAppBar(),
-      //   "/home": (BuildContext context) => MainPage(),
-      //   "/explorer": (BuildContext context) => Birdlist(),
-      //   "/profile": (BuildContext context) => ProFile(),
-      // },
+      supportedLocales: [
+        const Locale('en'),
+        const Locale('mn'),
+      ],
+      locale: _locale,
+      localizationsDelegates: [
+        AppLocalizations.delegate,
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
+      home: HelloConvexAppBar(changeLanguage: _changeLanguage),
       builder: EasyLoading.init(),
     );
   }
 }
 
 class HelloConvexAppBar extends StatefulWidget {
+  final void Function(Locale) changeLanguage;
+
+  const HelloConvexAppBar({Key? key, required this.changeLanguage}) : super(key: key);
+
   @override
   State<HelloConvexAppBar> createState() => _HelloConvexAppBarState();
 }
@@ -82,35 +100,45 @@ class HelloConvexAppBar extends StatefulWidget {
 class _HelloConvexAppBarState extends State<HelloConvexAppBar> {
   int selectedPage = 0;
 
-  final _pageOption = [MainPage(), Season(), ProFile()];
+  late List<Widget> _pageOptions;
+
+  @override
+  void initState() {
+    super.initState();
+    _pageOptions = [
+      MainPage(changeLanguage: widget.changeLanguage),
+      Season(changeLanguage: widget.changeLanguage),
+      ProFile(changeLanguage: widget.changeLanguage),
+    ];
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: _pageOption[selectedPage],
+      body: _pageOptions[selectedPage],
       bottomNavigationBar: ConvexAppBar(
-          gradient: LinearGradient(
-            colors: [
-              Color(0xFF860000),
-              Color(0xFFEB1933)
-            ], // Define your gradient colors
-            begin: Alignment.centerRight,
-            end: Alignment.centerLeft,
-            stops: [0.2, 4], // Optional: Define color stops
-            // tileMode: TileMode.clamp, // Optional: Define tile mode
-          ),
-          style: TabStyle.react,
-          items: [
-            TabItem(icon: Icons.home, title: "Home"),
-            TabItem(icon: Icons.explore, title: "Explorer"),
-            TabItem(icon: Icons.account_balance, title: "Profile"),
+        gradient: LinearGradient(
+          colors: [
+            Color(0xFF860000),
+            Color(0xFFEB1933)
           ],
-          initialActiveIndex: selectedPage,
-          onTap: (int i) => {
-                setState(() {
-                  selectedPage = i;
-                }),
-              }),
+          begin: Alignment.centerRight,
+          end: Alignment.centerLeft,
+          stops: [0.2, 4],
+        ),
+        style: TabStyle.react,
+        items: [
+          TabItem(icon: Icons.home, title: "Home"),
+          TabItem(icon: Icons.explore, title: "Explorer"),
+          TabItem(icon: Icons.account_balance, title: "Profile"),
+        ],
+        initialActiveIndex: selectedPage,
+        onTap: (int i) {
+          setState(() {
+            selectedPage = i;
+          });
+        },
+      ),
     );
   }
 }

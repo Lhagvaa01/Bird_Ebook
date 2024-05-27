@@ -2,9 +2,12 @@
 
 import 'package:bird_ebook/Pages/identify%20a%20bird/bodySize.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class BodyShape extends StatefulWidget {
-  const BodyShape({super.key});
+  final void Function(Locale) changeLanguage;
+  
+  const BodyShape({Key? key, required this.changeLanguage}) : super(key: key);
 
   @override
   State<BodyShape> createState() => _BodyShapeState();
@@ -18,7 +21,7 @@ class _BodyShapeState extends State<BodyShape> {
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        title: Text("Дэлгэрэнгүй хайлт"),
+        title: Text(AppLocalizations.of(context)?.searchButtonTxt ?? ''),
         elevation: 0,
         flexibleSpace: Container(
           decoration: BoxDecoration(
@@ -41,7 +44,7 @@ class _BodyShapeState extends State<BodyShape> {
             padding: EdgeInsets.only(top: 35, left: 60, right: 60),
           ),
           Text(
-            "Эдгээр шүүлтүүрийг ашиглан хайж буй шувуугаа олоорой",
+            AppLocalizations.of(context)?.findbirdTxt ?? '',
             textAlign: TextAlign.center,
             style: TextStyle(
               fontSize: 20,
@@ -99,7 +102,7 @@ class _BodyShapeState extends State<BodyShape> {
             padding: EdgeInsets.only(top: 20, right: 60, left: 60),
             width: size.width,
             child: Text(
-              "Биеийн хэлбэр",
+            AppLocalizations.of(context)?.bodyShapeTxt ?? '',
               style: TextStyle(
                 fontSize: 20,
                 color: Colors.black,
@@ -144,7 +147,7 @@ class _BodyShapeState extends State<BodyShape> {
                   onTap: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => BodySize()),
+                      MaterialPageRoute(builder: (context) => BodySize(changeLanguage: widget.changeLanguage)),
                     );
                   },
                   child: Icon(

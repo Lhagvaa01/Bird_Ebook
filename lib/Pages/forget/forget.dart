@@ -77,7 +77,7 @@ class _ForgetState extends State<Forget> {
         } else {
           Alert(
             context: ctx,
-            title: "Алдаа",
+            title: "Бүртгэлгүй хаяг байна",
             desc: bodyData,
             buttons: [
               DialogButton(

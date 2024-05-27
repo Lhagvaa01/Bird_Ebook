@@ -15,6 +15,7 @@ import 'package:http/http.dart' as http;
 // ignore: library_prefixes
 import '../../post@get/api.dart';
 import 'package:nb_utils/nb_utils.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class SignUpMain extends StatefulWidget {
   const SignUpMain({super.key});
@@ -203,7 +204,7 @@ class _SignUpMainState extends State<SignUpMain> {
                           padding: EdgeInsets.all(20),
                           child: Text(
                             textAlign: TextAlign.start,
-                            "Бүртгүүлэх",
+                           AppLocalizations.of(context)?.registerTxt ?? '',
                             style: TextStyle(color: Colors.red, fontSize: 30),
                           ),
                         ),
@@ -214,7 +215,7 @@ class _SignUpMainState extends State<SignUpMain> {
                               TextField(
                                 controller: username,
                                 decoration: InputDecoration(
-                                    labelText: 'Нэр',
+                                    labelText: AppLocalizations.of(context)?.usernameHint ?? '',
                                     border: OutlineInputBorder()),
                               ),
                               SizedBox(
@@ -223,7 +224,7 @@ class _SignUpMainState extends State<SignUpMain> {
                               TextField(
                                 controller: email,
                                 decoration: InputDecoration(
-                                    labelText: 'И-Мэйл',
+                                    labelText: AppLocalizations.of(context)?.emailHint ?? '',
                                     border: OutlineInputBorder()),
                               ),
                               SizedBox(
@@ -233,7 +234,7 @@ class _SignUpMainState extends State<SignUpMain> {
                                 controller: password,
                                 obscureText: isVisiblity ? true : false,
                                 decoration: InputDecoration(
-                                    labelText: 'Нууц үг',
+                                    labelText: AppLocalizations.of(context)?.passwordHint ?? '',
                                     suffixIcon: IconButton(onPressed: (){
                                     setState(() {
                                       isVisiblity = !isVisiblity;
@@ -248,7 +249,7 @@ class _SignUpMainState extends State<SignUpMain> {
                                 controller: cpassword,
                                 obscureText: isVisiblityC ? true : false,
                                 decoration: InputDecoration(
-                                    labelText: 'Нууц үг давтах',
+                                    labelText:AppLocalizations.of(context)?.repeadPasswordHint ?? '',
                                     suffixIcon: IconButton(onPressed: (){
                                     setState(() {
                                       isVisiblityC = !isVisiblityC;
@@ -272,7 +273,7 @@ class _SignUpMainState extends State<SignUpMain> {
                                       onPressed: () {
                                         register(context);
                                       },
-                                      child: Text('Бүртгүүлэх'),
+                                      child: Text(AppLocalizations.of(context)?.registerTxt ?? ''),
                                     ),
                                   ),
                                 ),
@@ -285,10 +286,10 @@ class _SignUpMainState extends State<SignUpMain> {
                   ),
                   GestureDetector(
                     onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => LoginMain()),
-                      );
+                      // Navigator.push(
+                      //   context,
+                      //   MaterialPageRoute(builder: (context) => LoginMain()),
+                      // );
                     },
                     child: Container(
                       // padding: EdgeInsets.all(20),
@@ -308,7 +309,7 @@ class _SignUpMainState extends State<SignUpMain> {
                           // Text("")
                           Center(
                         child: Text(
-                          "Нэвтрэх",
+                         AppLocalizations.of(context)?.loginTxt ?? '',
                           style: TextStyle(color: Colors.red, fontSize: 25),
                         ),
                       ),

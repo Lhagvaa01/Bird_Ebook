@@ -8,9 +8,13 @@ import '../../Models/UserIcons.dart';
 import '../../Models/Users.dart';
 import '../../constant.dart';
 import '../../post@get/api.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import '../../main.dart';
 
 class EditProfile extends StatefulWidget {
-  const EditProfile({Key? key}) : super(key: key);
+  final void Function(Locale) changeLanguage;
+  
+  const EditProfile({Key? key, required this.changeLanguage}) : super(key: key);
 
   @override
   State<EditProfile> createState() => _EditProfileState();
@@ -61,7 +65,7 @@ class _EditProfileState extends State<EditProfile> {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
-        title: Text("EDIT PROFILE"),
+        title: Text(AppLocalizations.of(context)?.editProTxt ?? ''),
         elevation: 0,
         flexibleSpace: Container(
           decoration: BoxDecoration(
@@ -183,7 +187,7 @@ class _EditProfileState extends State<EditProfile> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    "About you",
+                  AppLocalizations.of(context)?.aboutuTxt ?? '',
                     style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25),
                   ),
                   SizedBox(
@@ -192,7 +196,7 @@ class _EditProfileState extends State<EditProfile> {
                   TextField(
                     controller: name,
                     decoration: InputDecoration(
-                      labelText: "Хэрэглэгчийн нэр",
+                      labelText: AppLocalizations.of(context)?.usernameHint ?? '',
                       border: UnderlineInputBorder(
                         borderSide: BorderSide(color: Colors.blue),
                       ),
@@ -205,7 +209,7 @@ class _EditProfileState extends State<EditProfile> {
                     controller: password,
                                 obscureText: isVisiblity ? true : false,
                     decoration: InputDecoration(
-                      labelText: "Нууц үг",
+                      labelText: AppLocalizations.of(context)?.passwordHint ?? '',
                         suffixIcon: IconButton(onPressed: (){
                                     setState(() {
                                       isVisiblity = !isVisiblity;
@@ -223,7 +227,7 @@ class _EditProfileState extends State<EditProfile> {
                   TextField(
                     controller: email,
                     decoration: InputDecoration(
-                      labelText: "Э-Мэйл хаяг",
+                      labelText: AppLocalizations.of(context)?.emailHint ?? '',
                       border: UnderlineInputBorder(
                         borderSide: BorderSide(color: Colors.blue),
                       ),
@@ -246,7 +250,7 @@ class _EditProfileState extends State<EditProfile> {
                             userFieldUpdate(context);
                           },
                           child: Text(
-                            'Хадгалах',
+                           AppLocalizations.of(context)?.saveTxt ?? '',
                             style: TextStyle(color: Colors.white),
                           ),
                         ),
@@ -271,11 +275,11 @@ class _EditProfileState extends State<EditProfile> {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => LoginMain()),
+                                  builder: (context) => LoginMain(changeLanguage: widget.changeLanguage)),
                             );
                           },
                           child: Text(
-                            'Гарах',
+                           AppLocalizations.of(context)?.exitTxt ?? '',
                             style: TextStyle(color: Colors.white),
                           ),
                         ),

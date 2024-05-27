@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, deprecated_member_use, sized_box_for_whitespace, avoid_print, avoid_unnecessary_containers, unnecessary_new, use_build_context_synchronously
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, deprecated_member_use, sized_box_for_whitespace, avoid_print, avoid_unnecessary_containers, unnecessary_new, use_build_context_synchronously, unused_field
 
 import 'dart:async';
 import 'dart:convert';
@@ -17,9 +17,13 @@ import '../../main.dart';
 import '../../post@get/api.dart';
 import '../SignUp/signUp.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
 
 class LoginMain extends StatefulWidget {
-  const LoginMain({super.key});
+  final void Function(Locale) changeLanguage;
+
+  const LoginMain({required this.changeLanguage});
 
   @override
   State<LoginMain> createState() => _LoginMainState();
@@ -31,6 +35,10 @@ class _LoginMainState extends State<LoginMain> {
   var isVisiblity = false;
   Timer? _timer;
   late double _progress;
+
+  void changeLanguage(Locale locale) {
+    widget.changeLanguage(locale);
+  }
 
   @override
   void initState() {
@@ -91,7 +99,7 @@ class _LoginMainState extends State<LoginMain> {
           Navigator.pop(context);
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => HelloConvexAppBar()),
+            MaterialPageRoute(builder: (context) => HelloConvexAppBar(changeLanguage: changeLanguage)),
           );
         } else {
           await EasyLoading.dismiss();
@@ -210,24 +218,43 @@ class _LoginMainState extends State<LoginMain> {
                     ],
                   ),
                 ),
-                Container(
+                GestureDetector(
+                onTap: () {
+                  setState(() {
+                    if(language == "mn"){
+                      language = 'en';
+                      changeLanguage(const Locale('en'));
+                    }else{ 
+                      language = 'mn';
+                      changeLanguage(const Locale('mn'));
+                    }
+                    print(language);
+                  });
+                },
+
+                child: Container(
                   height: 45,
                   width: 80,
                   margin: EdgeInsets.only(top: 40, right: 30),
                   padding: EdgeInsets.all(5),
                   decoration: BoxDecoration(
-                      color: Color(0xFFCAC7C7),
-                      borderRadius: BorderRadius.circular(10)),
+                    color: Color(0xFFCAC7C7),
+                    borderRadius: BorderRadius.circular(10),
+                  ),
                   child: Row(
+                    mainAxisAlignment:MainAxisAlignment.spaceEvenly,
                     children: [
                       Image.asset(
                         "assets/icons/usa.png",
                       ),
-                      Text("ENG"),
+                      Text(language.toUpperCase()),
                     ],
                   ),
                 ),
+              ),
+
               ],
+              
             ),
           ),
 
@@ -252,11 +279,13 @@ class _LoginMainState extends State<LoginMain> {
                         width: size.width - 80,
                         height: 60,
                         margin: EdgeInsets.only(left: 10, right: 10, top: 10),
-                        child: Text(
+                        child: 
+                        Text(
                           textAlign: TextAlign.start,
-                          "Нэвтрэх",
+                          AppLocalizations.of(context)?.loginTxt ?? '',
                           style: TextStyle(color: Colors.red, fontSize: 30),
                         ),
+
                       ),
                       Container(
                         padding: EdgeInsets.only(left: 20, right: 20),
@@ -266,7 +295,7 @@ class _LoginMainState extends State<LoginMain> {
                               controller: email,
                               decoration: InputDecoration(
                                 icon: Icon(Icons.person_outlined),
-                                labelText: 'Нэвтрэх нэр',
+                                labelText:  AppLocalizations.of(context)?.usernameHint ?? '',
                                 border: UnderlineInputBorder(
                                   borderSide: BorderSide(color: Colors.blue),
                                 ),
@@ -290,7 +319,7 @@ class _LoginMainState extends State<LoginMain> {
                                       ? Icon(Icons.visibility_off)
                                       : Icon(Icons.visibility),
                                 ),
-                                labelText: 'Нууц үг',
+                                labelText: AppLocalizations.of(context)?.passwordHint ?? '',
                                 border: UnderlineInputBorder(
                                   borderSide: BorderSide(color: Colors.blue),
                                 ),
@@ -301,7 +330,7 @@ class _LoginMainState extends State<LoginMain> {
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (context) => ProFile()),
+                                      builder: (context) => ProFile(changeLanguage: changeLanguage)),
                                 );
                               },
                               child: GestureDetector(
@@ -321,7 +350,7 @@ class _LoginMainState extends State<LoginMain> {
                                     padding: EdgeInsets.all(10),
                                     child: Text(
                                       textAlign: TextAlign.end,
-                                      "Нууц үг мартсан?",
+                                      AppLocalizations.of(context)?.forgetTxt ?? '',
                                       style: TextStyle(
                                           fontSize: 15, color: Colors.grey),
                                     ),
@@ -351,7 +380,7 @@ class _LoginMainState extends State<LoginMain> {
                                       );
                                       login(context);
                                     },
-                                    child: Text('Нэвтрэх'),
+                                    child: Text(AppLocalizations.of(context)?.loginTxt ?? ''),
                                   ),
                                 ),
                               ),
@@ -387,7 +416,7 @@ class _LoginMainState extends State<LoginMain> {
                         // Text("")
                         Center(
                       child: Text(
-                        "Бүртгүүлэх",
+                        AppLocalizations.of(context)?.registerTxt ?? '',
                         style: TextStyle(color: Colors.red, fontSize: 20),
                       ),
                     ),

@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import '../../Models/BirdDatas.dart';
 import 'package:circular_profile_avatar/circular_profile_avatar.dart';
 import 'package:audioplayers/audioplayers.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class CountryList implements ISuspensionBean {
   final String title;
@@ -103,7 +104,7 @@ class _AlphabetListScrollViewState extends State<AlphabetListScrollView> {
                     },
                     icon: Icon(Icons.close)),
                 // icon: Icon(Icons.person_outlined),
-                hintText: 'Нэрээр хайлт хийнэ үү',
+                hintText:AppLocalizations.of(context)?.nameSearchTxt ?? '',
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(15),
                   borderSide: BorderSide(color: Colors.blue),
@@ -192,7 +193,7 @@ class _AlphabetListScrollViewState extends State<AlphabetListScrollView> {
             icon: Icon(Icons.volume_up),
           ),
           title: Text(item.title),
-          subtitle: Text("Овгийн нэр: " + filteredBirdDataList.tCBIRDFAMILYPK!),
+          subtitle: Text(AppLocalizations.of(context)?.familyTxt ?? '' + ": " + filteredBirdDataList.tCBIRDFAMILYPK!),
         ),
       );
 }

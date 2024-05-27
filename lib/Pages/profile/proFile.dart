@@ -12,9 +12,12 @@ import 'package:intl/intl.dart';
 import '../../Models/UserIcons.dart';
 import '../../post@get/api.dart';
 import 'package:avatar_glow/avatar_glow.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ProFile extends StatefulWidget {
-  const ProFile({super.key});
+  final void Function(Locale) changeLanguage;
+  
+  const ProFile({Key? key, required this.changeLanguage}) : super(key: key);
 
   @override
   State<ProFile> createState() => _ProFileState();
@@ -90,7 +93,7 @@ class _ProFileState extends State<ProFile> {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => EditProfile()),
+                                  builder: (context) => EditProfile(changeLanguage: widget.changeLanguage)),
                             );
                           },
                           child: Container(
@@ -103,7 +106,7 @@ class _ProFileState extends State<ProFile> {
                             ),
                             child: Center(
                               child: Text(
-                                "Edit profile",
+                               AppLocalizations.of(context)?.editProTxt ?? '',
                                 textAlign: TextAlign.center,
                                 style: TextStyle(
                                     color: Colors.white, fontSize: 15),
@@ -116,12 +119,15 @@ class _ProFileState extends State<ProFile> {
                   ),
                   Container(
                     padding: EdgeInsets.all(20),
+                    
                     child: Row(
                       //  rossAxisAlignment: CrossAxisAlignment.end,
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      
                       children: [
+                        
                         Text(
-                          "Your list",
+                        AppLocalizations.of(context)?.aboutuTxt ?? '',
                           style: TextStyle(
                               fontWeight: FontWeight.bold, fontSize: 35),
                         ),
@@ -149,7 +155,7 @@ class _ProFileState extends State<ProFile> {
                                   height: 10,
                                 ),
                                 Text(
-                                  "Favorite Birds",
+                                 AppLocalizations.of(context)?.favBirdTxt ?? '',
                                   // textAlign: TextAlign.center,
                                   style: TextStyle(
                                       color: Color.fromARGB(255, 0, 0, 0),
@@ -244,7 +250,7 @@ class _ProFileState extends State<ProFile> {
                                       mainAxisAlignment:
                                           MainAxisAlignment.center,
                                       children: [
-                                        Text("Нийт хадгалсан шувуу"),
+                                        Text(AppLocalizations.of(context)?.totalTxt ?? ''),
                                         Text(
                                           myLists[index]
                                               .tCBIRDPK!

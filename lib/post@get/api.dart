@@ -374,3 +374,62 @@ Future<String> GetMyListsSave(MyLists body, BuildContext ctx) async {
 
 
 
+Future<String> PostSearchDetail(String body, BuildContext ctx) async {
+  var response;
+  var responseBodyD;
+  Map<String, dynamic> responseBody;
+  print(body);
+
+  try {
+    final uri = Uri.http(backUrlT, '/post_SearchDetail/');
+    print(uri);
+    response = await http.post(
+      uri,
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: body,
+    );
+
+    // Try to decode the response body
+    try {
+      responseBodyD = utf8.decode(response.bodyBytes);
+    } catch (e) {
+      print('Error decoding response body: $e');
+      throw Exception('Error decoding response body: $e');
+    }
+
+    print('Response body: $responseBodyD');
+
+  } catch (e) {
+    print('Error creating user: $e');
+    throw Exception('Error creating user: $e');
+  }
+
+  if (response.statusCode == 200) {
+    try {
+      if (response.body.isNotEmpty) {
+        // Decode the response body using UTF-8 encoding
+        String responseB = utf8.decode(response.bodyBytes);
+        return responseB;
+      } else {
+        throw Exception('Empty response body');
+      }
+    } catch (e) {
+      print('Error parsing JSON: $e');
+      throw Exception('Error parsing JSON: $e');
+    }
+    // return response.statusCode.toString();
+  } else if (response.statusCode == "404") {
+    print("Not found: 404");
+    return "404";
+  } else {
+    toasty(ctx, "Server error: ${response.statusCode}",
+        bgColor: Colors.redAccent,
+        textColor: Colors.white,
+        gravity: ToastGravity.BOTTOM,
+        length: Toast.LENGTH_LONG);
+    throw "Unable to retrieve posts. Status code: ${response.statusCode}";
+  }
+}
+
