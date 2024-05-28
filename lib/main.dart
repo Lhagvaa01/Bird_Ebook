@@ -12,6 +12,7 @@ import 'package:nb_utils/nb_utils.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 
 import 'Models/UserIcons.dart';
+import 'Pages/BirdFamily/birdFamily.dart';
 import 'Pages/identify a bird/seoson.dart';
 import '../../post@get/api.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -51,11 +52,31 @@ class MyAppState extends State<MyApp> {
   void initState() {
     super.initState();
     getUserIcons(context);
+    getSearchDetailJson(context);
   }
 
   getUserIcons(BuildContext ctx) {
     GetIcons(ctx).then((value) {
       print(icons);
+    });
+  }
+
+  getSearchDetailJson(BuildContext ctx) {
+    GetDetailJson(ctx, '/getSeasons/').then((value) {
+      seasonsJson = value;
+      // print(value);
+    });
+    GetDetailJson(ctx, '/getHabitat/').then((value) {
+      habitatJson = value;
+    });
+    GetDetailJson(ctx, '/getBodyShape/').then((value) {
+      bodyShapeJson = value;
+    });
+    GetDetailJson(ctx, '/getBodySize/').then((value) {
+      bodySizeJson = value;
+    });
+    GetDetailJson(ctx, '/getBodyColor/').then((value) {
+      bodyColorJson = value;
     });
   }
 
@@ -91,7 +112,8 @@ class MyAppState extends State<MyApp> {
 class HelloConvexAppBar extends StatefulWidget {
   final void Function(Locale) changeLanguage;
 
-  const HelloConvexAppBar({Key? key, required this.changeLanguage}) : super(key: key);
+  const HelloConvexAppBar({Key? key, required this.changeLanguage})
+      : super(key: key);
 
   @override
   State<HelloConvexAppBar> createState() => _HelloConvexAppBarState();
@@ -107,7 +129,7 @@ class _HelloConvexAppBarState extends State<HelloConvexAppBar> {
     super.initState();
     _pageOptions = [
       MainPage(changeLanguage: widget.changeLanguage),
-      Season(changeLanguage: widget.changeLanguage),
+      birdFamily(changeLanguage: widget.changeLanguage),
       ProFile(changeLanguage: widget.changeLanguage),
     ];
   }
@@ -118,10 +140,7 @@ class _HelloConvexAppBarState extends State<HelloConvexAppBar> {
       body: _pageOptions[selectedPage],
       bottomNavigationBar: ConvexAppBar(
         gradient: LinearGradient(
-          colors: [
-            Color(0xFF860000),
-            Color(0xFFEB1933)
-          ],
+          colors: [Color(0xFF860000), Color(0xFFEB1933)],
           begin: Alignment.centerRight,
           end: Alignment.centerLeft,
           stops: [0.2, 4],
@@ -129,7 +148,7 @@ class _HelloConvexAppBarState extends State<HelloConvexAppBar> {
         style: TabStyle.react,
         items: [
           TabItem(icon: Icons.home, title: "Home"),
-          TabItem(icon: Icons.explore, title: "Explorer"),
+          TabItem(icon: Icons.book, title: "Family"),
           TabItem(icon: Icons.account_balance, title: "Profile"),
         ],
         initialActiveIndex: selectedPage,

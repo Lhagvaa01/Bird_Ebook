@@ -1,4 +1,4 @@
-// ignore_for_file: avoid_unnecessary_containers, prefer_const_constructors, prefer_const_literals_to_create_immutables, sized_box_for_whitespace, empty_constructor_bodies, use_build_context_synchronously
+// ignore_for_file: avoid_unnecessary_containers, prefer_const_constructors, prefer_const_literals_to_create_immutables, sized_box_for_whitespace, empty_constructor_bodies, use_build_context_synchronously, unnecessary_brace_in_string_interps
 
 import 'dart:async';
 import 'dart:convert';
@@ -22,7 +22,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class MainPage extends StatefulWidget {
   final void Function(Locale) changeLanguage;
-  
+
   const MainPage({Key? key, required this.changeLanguage}) : super(key: key);
   // const MainPage({Key? key}) : super(key: key);
 
@@ -128,16 +128,8 @@ class _MainPageState extends State<MainPage> {
         leading: Container(
           child: Image.asset(
             "assets/images/logo.png",
-            // width: size.width / 4,
           ),
         ),
-        // actions: [
-        //   IconButton(
-        //     padding: EdgeInsets.only(right: 30),
-        //     onPressed: () {},
-        //     icon: Icon(Icons.menu, size: 40,),
-        //   )
-        // ],
       ),
       endDrawer: NavigationDrawer(changeLanguage: widget.changeLanguage),
       body: SingleChildScrollView(
@@ -171,7 +163,9 @@ class _MainPageState extends State<MainPage> {
                           child: Column(
                             children: [
                               Text(
-                          AppLocalizations.of(context)?.indicatorTxt ?? '',),
+                                AppLocalizations.of(context)?.indicatorTxt ??
+                                    '',
+                              ),
                               Text("300"),
                             ],
                           ),
@@ -186,13 +180,21 @@ class _MainPageState extends State<MainPage> {
                           ),
                           width: size.width / 3,
                           child: Column(
-                            children: [Text(AppLocalizations.of(context)?.speciesTxt ?? ''), Text("550")],
+                            children: [
+                              Text(AppLocalizations.of(context)?.speciesTxt ??
+                                  ''),
+                              Text("550")
+                            ],
                           ),
                         ),
                         Container(
                           width: size.width / 3,
                           child: Column(
-                            children: [Text(AppLocalizations.of(context)?.imagesTxt ?? ''), Text("7000")],
+                            children: [
+                              Text(AppLocalizations.of(context)?.imagesTxt ??
+                                  ''),
+                              Text("7000")
+                            ],
                           ),
                         ),
                         SizedBox(
@@ -217,7 +219,9 @@ class _MainPageState extends State<MainPage> {
                           onTap: () {
                             Navigator.push(
                               context,
-                              MaterialPageRoute(builder: (context) => Season(changeLanguage: widget.changeLanguage)),
+                              MaterialPageRoute(
+                                  builder: (context) => Season(
+                                      changeLanguage: widget.changeLanguage)),
                             );
                           },
                           child: Container(
@@ -238,7 +242,9 @@ class _MainPageState extends State<MainPage> {
                                   ),
                                 ),
                                 Text(
-                                AppLocalizations.of(context)?.searchButtonTxt ?? '',
+                                  AppLocalizations.of(context)
+                                          ?.searchButtonTxt ??
+                                      '',
                                   style: TextStyle(
                                     color: Colors.white,
                                     fontSize: 16,
@@ -280,7 +286,8 @@ class _MainPageState extends State<MainPage> {
                                   ),
                                 ),
                                 Text(
-                               AppLocalizations.of(context)?.listButtonTxt ?? '',
+                                  AppLocalizations.of(context)?.listButtonTxt ??
+                                      '',
                                   style: TextStyle(
                                     color: Colors.white,
                                     fontSize: 16,
@@ -306,7 +313,8 @@ class _MainPageState extends State<MainPage> {
 class NavigationDrawer extends StatefulWidget {
   final void Function(Locale) changeLanguage;
 
-  const NavigationDrawer({Key? key, required this.changeLanguage}) : super(key: key);
+  const NavigationDrawer({Key? key, required this.changeLanguage})
+      : super(key: key);
 
   @override
   State<NavigationDrawer> createState() => _NavigationDrawerState();
@@ -355,7 +363,6 @@ class _NavigationDrawerState extends State<NavigationDrawer> {
                                   language = 'mn';
                                   widget.changeLanguage(const Locale('mn'));
                                 }
-                                print(language);
                               });
                             },
                             child: Container(
@@ -368,12 +375,18 @@ class _NavigationDrawerState extends State<NavigationDrawer> {
                                 borderRadius: BorderRadius.circular(10),
                               ),
                               child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
                                 children: [
                                   Image.asset(
-                                    "assets/icons/usa.png",
+                                    language == "mn"
+                                        ? "assets/icons/mn.png"
+                                        : "assets/icons/usa.png",
                                   ),
-                                  Text(language.toUpperCase(), style: TextStyle(color: Colors.white),),
+                                  Text(
+                                    language.toUpperCase(),
+                                    style: TextStyle(color: Colors.white),
+                                  ),
                                 ],
                               ),
                             ),
@@ -408,50 +421,57 @@ class _NavigationDrawerState extends State<NavigationDrawer> {
                             ),
                             Text(
                               userField.tCUSERNAME.toString(),
-                              style: TextStyle(fontSize: 20, color: Colors.white),
+                              style:
+                                  TextStyle(fontSize: 20, color: Colors.white),
                             )
                           ],
                         ),
                       ],
                     ),
                   ),
-                  
-                  
-                  Container(
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.pop(context);
+                    },
                     child: Container(
-                      width: size.width / 2,
-                      padding: EdgeInsets.all(10),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(
-                            10), // Adjust the radius as needed
-                        color: Colors.transparent,
-                      ),
-                      child: Row(
-                        children: [
-                          Icon(
-                            Icons.home,
-                            color: Colors.red,
-                          ),
-                          SizedBox(
-                            width: 10,
-                          ),
-                          Text(
-                            'Home',
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                              color: const Color.fromARGB(255, 0, 0, 0),
-                              fontSize: 15,
+                      child: Container(
+                        width: size.width / 2,
+                        padding: EdgeInsets.all(10),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(
+                              10), // Adjust the radius as needed
+                          color: Colors.transparent,
+                        ),
+                        child: Row(
+                          children: [
+                            Icon(
+                              Icons.home,
+                              color: Colors.red,
                             ),
-                          ),
-                        ],
+                            SizedBox(
+                              width: 10,
+                            ),
+                            Text(
+                              'Home',
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                color: const Color.fromARGB(255, 0, 0, 0),
+                                fontSize: 15,
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   ),
                   GestureDetector(
                     onTap: () {
+                      Navigator.pop(context);
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => Birdlist()),
+                        MaterialPageRoute(
+                            builder: (context) =>
+                                Season(changeLanguage: widget.changeLanguage)),
                       );
                     },
                     child: Container(
@@ -473,7 +493,7 @@ class _NavigationDrawerState extends State<NavigationDrawer> {
                               width: 10,
                             ),
                             Text(
-                            AppLocalizations.of(context)?.searchBtnTxt ?? '',
+                              AppLocalizations.of(context)?.searchBtnTxt ?? '',
                               textAlign: TextAlign.center,
                               style: TextStyle(
                                 color: const Color.fromARGB(255, 0, 0, 0),
@@ -485,33 +505,45 @@ class _NavigationDrawerState extends State<NavigationDrawer> {
                       ),
                     ),
                   ),
-                  Container(
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.pop(context);
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => Birdlist(
+                                  birdDataList: datas,
+                                )),
+                      );
+                    },
                     child: Container(
-                      width: size.width / 2,
-                      padding: EdgeInsets.all(10),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(
-                            10), // Adjust the radius as needed
-                        color: Colors.transparent,
-                      ),
-                      child: Row(
-                        children: [
-                          Icon(
-                            Icons.list,
-                            color: Colors.red,
-                          ),
-                          SizedBox(
-                            width: 10,
-                          ),
-                          Text(
-                            AppLocalizations.of(context)?.listButtonTxt ?? '',
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                              color: const Color.fromARGB(255, 0, 0, 0),
-                              fontSize: 15,
+                      child: Container(
+                        width: size.width / 2,
+                        padding: EdgeInsets.all(10),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(
+                              10), // Adjust the radius as needed
+                          color: Colors.transparent,
+                        ),
+                        child: Row(
+                          children: [
+                            Icon(
+                              Icons.list,
+                              color: Colors.red,
                             ),
-                          ),
-                        ],
+                            SizedBox(
+                              width: 10,
+                            ),
+                            Text(
+                              AppLocalizations.of(context)?.listButtonTxt ?? '',
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                color: const Color.fromARGB(255, 0, 0, 0),
+                                fontSize: 15,
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   ),
@@ -519,7 +551,9 @@ class _NavigationDrawerState extends State<NavigationDrawer> {
                     onTap: () {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => ProFile(changeLanguage: widget.changeLanguage)),
+                        MaterialPageRoute(
+                            builder: (context) =>
+                                ProFile(changeLanguage: widget.changeLanguage)),
                       );
                     },
                     child: Container(
@@ -557,7 +591,9 @@ class _NavigationDrawerState extends State<NavigationDrawer> {
                     onTap: () {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => LoginMain(changeLanguage: widget.changeLanguage)),
+                        MaterialPageRoute(
+                            builder: (context) => LoginMain(
+                                changeLanguage: widget.changeLanguage)),
                       );
                     },
                     child: Container(
@@ -580,7 +616,7 @@ class _NavigationDrawerState extends State<NavigationDrawer> {
                               width: 10,
                             ),
                             Text(
-                             AppLocalizations.of(context)?.exitTxt ?? '',
+                              AppLocalizations.of(context)?.exitTxt ?? '',
                               textAlign: TextAlign.center,
                               style: TextStyle(
                                 color: const Color.fromARGB(255, 0, 0, 0),

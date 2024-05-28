@@ -34,6 +34,7 @@
     "exitTxt": "Log out",
     "familyTxt": "Family name",
     "birdlistTxT": "Bird list",
-    "searchBtnTxt": "Search"
+    "searchBtnTxt": "Search",
+    "birdFamilyTxt": "Family List"
     
 }

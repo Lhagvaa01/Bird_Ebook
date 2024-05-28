@@ -35,7 +35,6 @@ class _MyListState extends State<MyList> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     getMyLists(context);
   }
@@ -44,8 +43,6 @@ class _MyListState extends State<MyList> {
     GetMyLists(ctx).then((value) {
       setState(() {
         myLists = value;
-        print("icons[0]: ");
-        print(myLists.length);
       });
     });
   }

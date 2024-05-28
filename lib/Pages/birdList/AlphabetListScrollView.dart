@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_typing_uninitialized_variables, override_on_non_overriding_member, unnecessary_brace_in_string_interps, sort_child_properties_last, prefer_const_constructors, sized_box_for_whitespace, prefer_interpolation_to_compose_strings, avoid_print
+// ignore_for_file: prefer_typing_uninitialized_variables, override_on_non_overriding_member, unnecessary_brace_in_string_interps, sort_child_properties_last, prefer_const_constructors, sized_box_for_whitespace, prefer_interpolation_to_compose_strings, avoid_print, prefer_adjacent_string_concatenation
 
 import 'package:azlistview/azlistview.dart';
 import 'package:bird_ebook/Pages/about/about.dart';
@@ -104,7 +104,7 @@ class _AlphabetListScrollViewState extends State<AlphabetListScrollView> {
                     },
                     icon: Icon(Icons.close)),
                 // icon: Icon(Icons.person_outlined),
-                hintText:AppLocalizations.of(context)?.nameSearchTxt ?? '',
+                hintText: AppLocalizations.of(context)?.nameSearchTxt ?? '',
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(15),
                   borderSide: BorderSide(color: Colors.blue),
@@ -193,7 +193,9 @@ class _AlphabetListScrollViewState extends State<AlphabetListScrollView> {
             icon: Icon(Icons.volume_up),
           ),
           title: Text(item.title),
-          subtitle: Text(AppLocalizations.of(context)?.familyTxt ?? '' + ": " + filteredBirdDataList.tCBIRDFAMILYPK!),
+          subtitle: Text((AppLocalizations.of(context)?.familyTxt ?? '') +
+              ": " +
+              filteredBirdDataList.tCBIRDFAMILYPK!),
         ),
       );
 }

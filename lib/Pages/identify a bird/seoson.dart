@@ -1,8 +1,12 @@
 // ignore_for_file: prefer_const_constructors, avoid_unnecessary_containers, sized_box_for_whitespace, prefer_const_literals_to_create_immutables
 
+import 'dart:convert';
+
 import 'package:bird_ebook/Pages/identify%20a%20bird/habitat.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
+import '../../constant.dart';
 
 class RoundedRadioButton extends StatelessWidget {
   final bool value;
@@ -51,7 +55,7 @@ class RoundedRadioButton extends StatelessWidget {
 
 class Season extends StatefulWidget {
   final void Function(Locale) changeLanguage;
-  
+
   const Season({Key? key, required this.changeLanguage}) : super(key: key);
 
   @override
@@ -94,13 +98,14 @@ class _SeasonState extends State<Season> {
     "Хэнтий"
   ];
 
-
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
-        title: Text(AppLocalizations.of(context)?.searchButtonTxt ?? '',),
+        title: Text(
+          AppLocalizations.of(context)?.searchButtonTxt ?? '',
+        ),
         elevation: 0,
         flexibleSpace: Container(
           decoration: BoxDecoration(
@@ -146,19 +151,21 @@ class _SeasonState extends State<Season> {
                   iconSize: 24,
                   elevation: 20,
                   style: TextStyle(color: Colors.black),
-                  underline: Container(), 
+                  underline: Container(),
                   onChanged: (String? newValue) {
                     setState(() {
                       selectedOption = newValue!;
+                      selectedLocation = newValue;
                     });
                   },
                   isExpanded: true,
-                  items: AimagNers.map<DropdownMenuItem<String>>((String value) {
+                  items:
+                      AimagNers.map<DropdownMenuItem<String>>((String value) {
                     return DropdownMenuItem<String>(
                       value: value,
-                      child: Center(child: Text(value)), 
+                      child: Center(child: Text(value)),
                     );
-                  }).toList(), 
+                  }).toList(),
                 ),
               ),
             ),
@@ -178,7 +185,7 @@ class _SeasonState extends State<Season> {
             padding: EdgeInsets.only(top: 20, right: 60, left: 60),
             width: size.width,
             child: Text(
-             AppLocalizations.of(context)?.seasonTxt ?? '',
+              AppLocalizations.of(context)?.seasonTxt ?? '',
               style: TextStyle(
                 fontSize: 20,
                 color: Colors.black,
@@ -190,7 +197,7 @@ class _SeasonState extends State<Season> {
             padding: EdgeInsets.symmetric(horizontal: 40),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
-              children: features.map((String feature) {
+              children: seasonsJson.map((String feature) {
                 return Padding(
                   padding: const EdgeInsets.only(
                       bottom: 10), // Add padding between radio buttons
@@ -201,13 +208,18 @@ class _SeasonState extends State<Season> {
                         onChanged: (bool? value) {
                           if (value ?? false) {
                             setState(() {
+                              String id = getTxtId(feature);
+                              searchBodyJson = jsonDecode(searchBody);
+                              searchBodyJson['season_id'] = id;
+
+                              print(searchBodyJson);
                               selectedFeature = feature;
                             });
                           }
                         },
                       ),
                       SizedBox(width: 10),
-                      Text(feature),
+                      Text(getTxt(feature)),
                     ],
                   ),
                 );
@@ -218,7 +230,9 @@ class _SeasonState extends State<Season> {
             onTap: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => Habitat(changeLanguage:widget.changeLanguage)),
+                MaterialPageRoute(
+                    builder: (context) =>
+                        Habitat(changeLanguage: widget.changeLanguage)),
               );
             },
             child: Container(

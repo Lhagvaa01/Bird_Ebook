@@ -4,9 +4,11 @@ import 'package:bird_ebook/Pages/identify%20a%20bird/bodySize.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
+import '../../constant.dart';
+
 class BodyShape extends StatefulWidget {
   final void Function(Locale) changeLanguage;
-  
+
   const BodyShape({Key? key, required this.changeLanguage}) : super(key: key);
 
   @override
@@ -67,7 +69,7 @@ class _BodyShapeState extends State<BodyShape> {
                         SizedBox(width: 10),
                         FittedBox(
                             child: Text(
-                          "Bulgan",
+                          selectedLocation,
                           style: TextStyle(fontSize: 20),
                         ))
                       ],
@@ -83,7 +85,8 @@ class _BodyShapeState extends State<BodyShape> {
                         Icon(Icons.access_time),
                         SizedBox(width: 10),
                         FittedBox(
-                            child: Text("June", style: TextStyle(fontSize: 20)))
+                            child: Text(getMounthtxt(),
+                                style: TextStyle(fontSize: 20)))
                       ],
                     ),
                   ),
@@ -102,7 +105,7 @@ class _BodyShapeState extends State<BodyShape> {
             padding: EdgeInsets.only(top: 20, right: 60, left: 60),
             width: size.width,
             child: Text(
-            AppLocalizations.of(context)?.bodyShapeTxt ?? '',
+              AppLocalizations.of(context)?.bodyShapeTxt ?? '',
               style: TextStyle(
                 fontSize: 20,
                 color: Colors.black,
@@ -115,16 +118,15 @@ class _BodyShapeState extends State<BodyShape> {
                 crossAxisCount: 3,
               ),
               children: [
-                 buildImage(0, "assets/images/body_shape1.PNG"),
-                 buildImage(1, "assets/images/bodu_shape2.PNG"),
-                 buildImage(2, "assets/images/bodu_shape3.PNG"),
-                 buildImage(3, "assets/images/bodu_shape4.PNG"),
-                 buildImage(4, "assets/images/bodu_shape5.PNG"),
-                 buildImage(5, "assets/images/bodu_shape6.PNG"),
-                 buildImage(6, "assets/images/bodu_shape7.PNG"),
-                 buildImage(7, "assets/images/bodu_shape8.PNG"),
-                 buildImage(8, "assets/images/bodu_shape9.PNG"),
-                 
+                buildImage(0, "assets/images/body_shape1.PNG"),
+                buildImage(1, "assets/images/bodu_shape2.PNG"),
+                buildImage(2, "assets/images/bodu_shape3.PNG"),
+                buildImage(3, "assets/images/bodu_shape4.PNG"),
+                buildImage(4, "assets/images/bodu_shape5.PNG"),
+                buildImage(5, "assets/images/bodu_shape6.PNG"),
+                buildImage(6, "assets/images/bodu_shape7.PNG"),
+                buildImage(7, "assets/images/bodu_shape8.PNG"),
+                buildImage(8, "assets/images/bodu_shape9.PNG"),
               ],
             ),
           ),
@@ -147,7 +149,9 @@ class _BodyShapeState extends State<BodyShape> {
                   onTap: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => BodySize(changeLanguage: widget.changeLanguage)),
+                      MaterialPageRoute(
+                          builder: (context) =>
+                              BodySize(changeLanguage: widget.changeLanguage)),
                     );
                   },
                   child: Icon(
@@ -163,6 +167,7 @@ class _BodyShapeState extends State<BodyShape> {
       ),
     );
   }
+
   Widget buildImage(int index, String imagePath) {
     return GestureDetector(
       onTap: () {
@@ -171,11 +176,11 @@ class _BodyShapeState extends State<BodyShape> {
         });
       },
       child: Container(
-        color: index == selectedIndex ? Color.fromARGB(255, 180, 180, 180) : Colors.transparent,
+        color: index == selectedIndex
+            ? Color.fromARGB(255, 180, 180, 180)
+            : Colors.transparent,
         child: Image.asset(imagePath),
       ),
     );
   }
 }
-
-

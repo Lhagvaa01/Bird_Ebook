@@ -1,8 +1,11 @@
 // ignore_for_file: prefer_const_constructors, avoid_unnecessary_containers, sized_box_for_whitespace, prefer_const_literals_to_create_immutables
 
+import 'dart:convert';
+
 import 'package:bird_ebook/Pages/identify%20a%20bird/bodyColor.dart';
 import 'package:bird_ebook/Pages/identify%20a%20bird/bodyShape.dart';
 import 'package:bird_ebook/Pages/identify%20a%20bird/BodySize.dart';
+import 'package:bird_ebook/constant.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -53,7 +56,7 @@ class RoundedRadioButton extends StatelessWidget {
 
 class BodySize extends StatefulWidget {
   final void Function(Locale) changeLanguage;
-  
+
   const BodySize({Key? key, required this.changeLanguage}) : super(key: key);
 
   @override
@@ -76,7 +79,7 @@ class _BodySizeState extends State<BodySize> {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
-        automaticallyImplyLeading : false,
+        automaticallyImplyLeading: false,
         title: Text(AppLocalizations.of(context)?.searchButtonTxt ?? ''),
         elevation: 0,
         flexibleSpace: Container(
@@ -100,7 +103,7 @@ class _BodySizeState extends State<BodySize> {
             padding: EdgeInsets.only(top: 35, left: 60, right: 60),
           ),
           Text(
-           AppLocalizations.of(context)?.findbirdTxt ?? '',
+            AppLocalizations.of(context)?.findbirdTxt ?? '',
             textAlign: TextAlign.center,
             style: TextStyle(
               fontSize: 20,
@@ -123,7 +126,7 @@ class _BodySizeState extends State<BodySize> {
                         SizedBox(width: 10),
                         FittedBox(
                             child: Text(
-                          "Bulgan",
+                          selectedLocation,
                           style: TextStyle(fontSize: 20),
                         ))
                       ],
@@ -139,7 +142,8 @@ class _BodySizeState extends State<BodySize> {
                         Icon(Icons.access_time),
                         SizedBox(width: 10),
                         FittedBox(
-                            child: Text("June", style: TextStyle(fontSize: 20)))
+                            child: Text(getMounthtxt(),
+                                style: TextStyle(fontSize: 20)))
                       ],
                     ),
                   ),
@@ -170,7 +174,7 @@ class _BodySizeState extends State<BodySize> {
             padding: EdgeInsets.symmetric(horizontal: 40),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
-              children: features.map((String feature) {
+              children: bodySizeJson.map((String feature) {
                 return Padding(
                   padding: const EdgeInsets.only(
                       bottom: 10), // Add padding between radio buttons
@@ -181,6 +185,8 @@ class _BodySizeState extends State<BodySize> {
                         onChanged: (bool? value) {
                           if (value ?? false) {
                             setState(() {
+                              String id = getTxtId(feature);
+                              searchBodyJson['bird_size_id'] = id;
                               selectedFeature = feature;
                             });
                           }
@@ -188,7 +194,7 @@ class _BodySizeState extends State<BodySize> {
                       ),
                       SizedBox(width: 10),
                       Text(
-                        feature,
+                        getTxt(feature),
                         style: TextStyle(fontSize: 20),
                       ),
                     ],
@@ -216,7 +222,9 @@ class _BodySizeState extends State<BodySize> {
                   onTap: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => BodyColor(changeLanguage: widget.changeLanguage)),
+                      MaterialPageRoute(
+                          builder: (context) =>
+                              BodyColor(changeLanguage: widget.changeLanguage)),
                     );
                   },
                   child: Icon(

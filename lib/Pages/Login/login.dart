@@ -19,7 +19,6 @@ import '../SignUp/signUp.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-
 class LoginMain extends StatefulWidget {
   final void Function(Locale) changeLanguage;
 
@@ -99,7 +98,9 @@ class _LoginMainState extends State<LoginMain> {
           Navigator.pop(context);
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => HelloConvexAppBar(changeLanguage: changeLanguage)),
+            MaterialPageRoute(
+                builder: (context) =>
+                    HelloConvexAppBar(changeLanguage: changeLanguage)),
           );
         } else {
           await EasyLoading.dismiss();
@@ -219,42 +220,41 @@ class _LoginMainState extends State<LoginMain> {
                   ),
                 ),
                 GestureDetector(
-                onTap: () {
-                  setState(() {
-                    if(language == "mn"){
-                      language = 'en';
-                      changeLanguage(const Locale('en'));
-                    }else{ 
-                      language = 'mn';
-                      changeLanguage(const Locale('mn'));
-                    }
-                    print(language);
-                  });
-                },
-
-                child: Container(
-                  height: 45,
-                  width: 80,
-                  margin: EdgeInsets.only(top: 40, right: 30),
-                  padding: EdgeInsets.all(5),
-                  decoration: BoxDecoration(
-                    color: Color(0xFFCAC7C7),
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  child: Row(
-                    mainAxisAlignment:MainAxisAlignment.spaceEvenly,
-                    children: [
-                      Image.asset(
-                        "assets/icons/usa.png",
-                      ),
-                      Text(language.toUpperCase()),
-                    ],
+                  onTap: () {
+                    setState(() {
+                      if (language == "mn") {
+                        language = 'en';
+                        changeLanguage(const Locale('en'));
+                      } else {
+                        language = 'mn';
+                        changeLanguage(const Locale('mn'));
+                      }
+                      print(language);
+                    });
+                  },
+                  child: Container(
+                    height: 45,
+                    width: 80,
+                    margin: EdgeInsets.only(top: 40, right: 30),
+                    padding: EdgeInsets.all(5),
+                    decoration: BoxDecoration(
+                      color: Color(0xFFCAC7C7),
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        Image.asset(
+                          language == "mn"
+                              ? "assets/icons/mn.png"
+                              : "assets/icons/usa.png",
+                        ),
+                        Text(language.toUpperCase()),
+                      ],
+                    ),
                   ),
                 ),
-              ),
-
               ],
-              
             ),
           ),
 
@@ -279,13 +279,11 @@ class _LoginMainState extends State<LoginMain> {
                         width: size.width - 80,
                         height: 60,
                         margin: EdgeInsets.only(left: 10, right: 10, top: 10),
-                        child: 
-                        Text(
+                        child: Text(
                           textAlign: TextAlign.start,
                           AppLocalizations.of(context)?.loginTxt ?? '',
                           style: TextStyle(color: Colors.red, fontSize: 30),
                         ),
-
                       ),
                       Container(
                         padding: EdgeInsets.only(left: 20, right: 20),
@@ -295,7 +293,9 @@ class _LoginMainState extends State<LoginMain> {
                               controller: email,
                               decoration: InputDecoration(
                                 icon: Icon(Icons.person_outlined),
-                                labelText:  AppLocalizations.of(context)?.usernameHint ?? '',
+                                labelText: AppLocalizations.of(context)
+                                        ?.usernameHint ??
+                                    '',
                                 border: UnderlineInputBorder(
                                   borderSide: BorderSide(color: Colors.blue),
                                 ),
@@ -319,7 +319,9 @@ class _LoginMainState extends State<LoginMain> {
                                       ? Icon(Icons.visibility_off)
                                       : Icon(Icons.visibility),
                                 ),
-                                labelText: AppLocalizations.of(context)?.passwordHint ?? '',
+                                labelText: AppLocalizations.of(context)
+                                        ?.passwordHint ??
+                                    '',
                                 border: UnderlineInputBorder(
                                   borderSide: BorderSide(color: Colors.blue),
                                 ),
@@ -330,7 +332,8 @@ class _LoginMainState extends State<LoginMain> {
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (context) => ProFile(changeLanguage: changeLanguage)),
+                                      builder: (context) => ProFile(
+                                          changeLanguage: changeLanguage)),
                                 );
                               },
                               child: GestureDetector(
@@ -350,7 +353,8 @@ class _LoginMainState extends State<LoginMain> {
                                     padding: EdgeInsets.all(10),
                                     child: Text(
                                       textAlign: TextAlign.end,
-                                      AppLocalizations.of(context)?.forgetTxt ?? '',
+                                      AppLocalizations.of(context)?.forgetTxt ??
+                                          '',
                                       style: TextStyle(
                                           fontSize: 15, color: Colors.grey),
                                     ),
@@ -380,7 +384,9 @@ class _LoginMainState extends State<LoginMain> {
                                       );
                                       login(context);
                                     },
-                                    child: Text(AppLocalizations.of(context)?.loginTxt ?? ''),
+                                    child: Text(AppLocalizations.of(context)
+                                            ?.loginTxt ??
+                                        ''),
                                   ),
                                 ),
                               ),

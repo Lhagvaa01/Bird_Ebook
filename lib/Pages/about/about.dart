@@ -168,14 +168,14 @@ class _BirdAboutState extends State<BirdAbout> {
               padding: EdgeInsets.only(left: 20, right: 20),
               child: Column(
                 children: [
-                  Container(
-                    width: size.width,
-                    child: Text(
-                    AppLocalizations.of(context)?.soundTxt ?? '',
-                      style: TextStyle(fontSize: 20),
-                      textAlign: TextAlign.start,
-                    ),
-                  ),
+                  // Container(
+                  //   width: size.width,
+                  //   child: Text(
+                  //     AppLocalizations.of(context)?.soundTxt ?? '',
+                  //     style: TextStyle(fontSize: 20),
+                  //     textAlign: TextAlign.start,
+                  //   ),
+                  // ),
                   SizedBox(
                     height: 10,
                   ),
@@ -186,7 +186,16 @@ class _BirdAboutState extends State<BirdAbout> {
                       borderRadius: BorderRadius.circular(15),
                     ),
                     child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
+                        Container(
+                          padding: EdgeInsets.only(left: 10),
+                          child: Text(
+                            AppLocalizations.of(context)?.soundTxt ?? '',
+                            style: TextStyle(fontSize: 20),
+                            textAlign: TextAlign.start,
+                          ),
+                        ),
                         IconButton(
                           onPressed: () {
                             final url =
@@ -218,7 +227,7 @@ class _BirdAboutState extends State<BirdAbout> {
                     padding: EdgeInsets.all(20),
                     width: size.width,
                     child: Text(
-                    AppLocalizations.of(context)?.indicatorTxt ?? '',
+                      AppLocalizations.of(context)?.indicatorTxt ?? '',
                       style: TextStyle(fontSize: 20),
                       textAlign: TextAlign.start,
                     ),
@@ -268,7 +277,8 @@ class _BirdAboutState extends State<BirdAbout> {
                             children: [
                               FittedBox(
                                 child: Text(
-                                  AppLocalizations.of(context)?.lifespanTxt ?? '',
+                                  AppLocalizations.of(context)?.lifespanTxt ??
+                                      '',
                                   textAlign: TextAlign.center,
                                   style: TextStyle(fontWeight: FontWeight.bold),
                                 ),
@@ -296,7 +306,8 @@ class _BirdAboutState extends State<BirdAbout> {
                             children: [
                               FittedBox(
                                 child: Text(
-                                 AppLocalizations.of(context)?.habitatTxt ?? '',
+                                  AppLocalizations.of(context)?.habitatTxt ??
+                                      '',
                                   textAlign: TextAlign.center,
                                   style: TextStyle(fontWeight: FontWeight.bold),
                                 ),
@@ -327,7 +338,7 @@ class _BirdAboutState extends State<BirdAbout> {
                   Container(
                     width: size.width,
                     child: Text(
-                     AppLocalizations.of(context)?.specificationTxt ?? '',
+                      AppLocalizations.of(context)?.specificationTxt ?? '',
                       style: TextStyle(fontSize: 20),
                       textAlign: TextAlign.start,
                     ),

@@ -6,6 +6,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:nb_utils/nb_utils.dart';
 
+import '../Models/BirdFamilys.dart';
 import '../Models/MyLists.dart';
 import '../Models/UserIcons.dart';
 import '../Models/Users.dart';
@@ -62,7 +63,27 @@ Future<String> LoginUserPost(Users body, BuildContext ctx) async {
 
 Future<String> GetBirds(BuildContext ctx) async {
   try {
-    final uri = Uri.http(backUrl, '/getBirds/');
+    final uri = Uri.http(backUrlT, '/getBirds/');
+    final response = await http.get(
+      uri,
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+    );
+
+    String responseB = utf8.decode(response.body.runes.toList());
+    print(responseB);
+    return responseB;
+  } catch (e) {
+    print('Error creating user: $e');
+    // Handle network or other errors
+    throw Exception('Error creating user: $e');
+  }
+}
+
+Future<String> GetFamilysDetails(BuildContext ctx, String id) async {
+  try {
+    final uri = Uri.http(backUrlT, '/get_BirdFilter/' + id + "/");
     final response = await http.get(
       uri,
       headers: <String, String>{
@@ -171,13 +192,18 @@ Future<String> EditUserPost(Users body, BuildContext ctx) async {
   return "s";
 }
 
-
 Future<List<MyLists>> GetMyLists(BuildContext ctx) async {
   var response;
   var responseBodyD;
   Map<String, dynamic> responseBody;
+  var uri = Uri.http(backUrlT, '/get_MyLists/');
   try {
-    final uri = Uri.http(backUrlT, '/get_MyLists/' + userField.id.toString());
+    if (userField.id.toString() != "null") {
+      uri = Uri.http(backUrlT, '/get_MyLists/' + userField.id.toString());
+    } else {
+      uri = Uri.http(backUrlT, '/get_MyLists/' + "1");
+    }
+    print(uri);
     response = await http.get(
       uri,
       headers: <String, String>{
@@ -221,13 +247,13 @@ Future<List<MyLists>> GetMyLists(BuildContext ctx) async {
   return <MyLists>[];
 }
 
-
 Future<String> removeBirdLists(birdPk, loginId, BuildContext ctx) async {
   var response;
   var responseBodyD;
   Map<String, dynamic> responseBody;
   try {
-    final uri = Uri.http(backUrlT, '/removeFavorite/' + loginId.toString() + "/" + birdPk);
+    final uri = Uri.http(
+        backUrlT, '/removeFavorite/' + loginId.toString() + "/" + birdPk);
     print(uri);
     response = await http.get(
       uri,
@@ -247,9 +273,8 @@ Future<String> removeBirdLists(birdPk, loginId, BuildContext ctx) async {
   }
 
   if (response.statusCode == 200) {
-
     isSaved = false;
-    
+
     return responseBodyD;
   } else if (response.statusCode == 404) {
     print("responseBody");
@@ -263,7 +288,6 @@ Future<String> removeBirdLists(birdPk, loginId, BuildContext ctx) async {
   }
   return "";
 }
-
 
 Future<List<MyLists>> EditMyLists(String jsonBody, BuildContext ctx) async {
   var response;
@@ -299,7 +323,7 @@ Future<List<MyLists>> EditMyLists(String jsonBody, BuildContext ctx) async {
     var bodyList = responseBody['body'];
     print(bodyList);
     // Iterate over the list and add UserIcons objects to getList
-    
+
     getList.add(MyLists.fromJson(bodyList));
     myLists = getList;
     return getList;
@@ -315,7 +339,6 @@ Future<List<MyLists>> EditMyLists(String jsonBody, BuildContext ctx) async {
   }
   return <MyLists>[];
 }
-
 
 Future<String> ForgetPassPost(String jsonBody, BuildContext ctx) async {
   try {
@@ -339,10 +362,9 @@ Future<String> ForgetPassPost(String jsonBody, BuildContext ctx) async {
   }
 }
 
-
 Future<String> GetMyListsSave(MyLists body, BuildContext ctx) async {
   try {
-    final uri = Uri.http(backUrl, '/create_MyLists/');
+    final uri = Uri.http(backUrlT, '/create_MyLists/');
     final jsonBody = jsonEncode(body);
     print(jsonBody);
     final response = await http.post(
@@ -363,7 +385,8 @@ Future<String> GetMyListsSave(MyLists body, BuildContext ctx) async {
         throw Exception('Empty response body');
       }
     } else {
-      throw Exception('HTTP request failed with status: ${response.statusCode}');
+      throw Exception(
+          'HTTP request failed with status: ${response.statusCode}');
     }
   } catch (e) {
     print('Error creating user: $e');
@@ -371,8 +394,6 @@ Future<String> GetMyListsSave(MyLists body, BuildContext ctx) async {
     throw Exception('Error creating user: $e');
   }
 }
-
-
 
 Future<String> PostSearchDetail(String body, BuildContext ctx) async {
   var response;
@@ -400,7 +421,6 @@ Future<String> PostSearchDetail(String body, BuildContext ctx) async {
     }
 
     print('Response body: $responseBodyD');
-
   } catch (e) {
     print('Error creating user: $e');
     throw Exception('Error creating user: $e');
@@ -433,3 +453,114 @@ Future<String> PostSearchDetail(String body, BuildContext ctx) async {
   }
 }
 
+Future<List<String>> GetDetailJson(BuildContext ctx, String url) async {
+  try {
+    final uri = Uri.http(backUrlT, url);
+    final response = await http.get(
+      uri,
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+    );
+
+    if (response.statusCode == 200) {
+      // Check if the response body is not empty
+      if (response.body.isNotEmpty) {
+        // Decode the response body using UTF-8 encoding
+        String responseBody = utf8.decode(response.bodyBytes);
+        // Parse the JSON response
+        var jsonData = jsonDecode(responseBody);
+
+        // Extract the 'body' field from the JSON response
+        var bodyData = jsonData['body'];
+
+        List<String> resultList = [];
+        for (var item in bodyData) {
+          print(item);
+          resultList.add(item.toString());
+        }
+
+        // if (bodyData is List) {
+        //   // Iterate through the body data if it's a list
+        //   for (var item in bodyData) {
+        //     // Assuming the item is a map and you need specific field from it, e.g., "TCSEASONNAME"
+        //     if (item is Map && item.containsKey('TCSEASONNAME')) {
+        //       resultList.add(item['TCSEASONNAME'].toString());
+        //     }
+        //     if (item is Map && item.containsKey('TCHABITATNAME')) {
+        //       resultList.add(item['TCHABITATNAME'].toString());
+        //     }
+        //     if (item is Map && item.containsKey('TCBODYSHAPEIMG')) {
+        //       resultList.add(item['TCBODYSHAPEIMG'].toString());
+        //     }
+        //     if (item is Map && item.containsKey('TCBIRDSIZENAME')) {
+        //       resultList.add(item['TCBIRDSIZENAME'].toString());
+        //     }
+        //     if (item is Map && item.containsKey('TCPLUMAGECOLOURNAME')) {
+        //       resultList.add(item['TCPLUMAGECOLOURNAME'].toString());
+        //     }
+        //   }
+        // } else {
+        //   throw Exception('Unexpected JSON format for body');
+        // }
+
+        return resultList;
+      } else {
+        throw Exception('Empty response body');
+      }
+    } else {
+      throw Exception(
+          'HTTP request failed with status: ${response.statusCode}');
+    }
+  } catch (e) {
+    print('Error fetching details: $e');
+    throw Exception('Error fetching details: $e');
+  }
+}
+
+Future<List<Birdfamilys>> GetFamilys(BuildContext ctx) async {
+  var response;
+  var responseBodyD;
+  Map<String, dynamic> responseBody;
+  try {
+    final uri = Uri.http(backUrlT, '/get_FamilyNameCount/');
+    response = await http.get(
+      uri,
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+    );
+
+    responseBodyD = utf8.decode(response.bodyBytes);
+
+    // return responseB;
+  } catch (e) {
+    print('Error creating user: $e');
+    // Handle network or other errors
+    throw Exception('Error creating user: $e');
+  }
+
+  var getList = <Birdfamilys>[];
+  if (response.statusCode == 200) {
+    // Parse the response body as a map
+    responseBody = json.decode(responseBodyD);
+    // Extract the list from the map
+    var bodyList = responseBody['body'];
+    // Iterate over the list and add UserIcons objects to getList
+    for (var gJson in bodyList) {
+      getList.add(Birdfamilys.fromJson(gJson));
+    }
+    familys = getList;
+    return getList;
+  } else if (response.statusCode == 404) {
+    print("responseBody");
+  } else {
+    toasty(ctx, "Сервэрийн алдаа: " + response.statusCode,
+        bgColor: Colors.redAccent,
+        textColor: whiteColor,
+        gravity: ToastGravity.BOTTOM,
+        length: Toast.LENGTH_LONG);
+    throw "Unable to retrieve posts.";
+  }
+  return <Birdfamilys>[];
+}
